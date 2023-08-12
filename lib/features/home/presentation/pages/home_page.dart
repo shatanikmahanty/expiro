@@ -1,4 +1,5 @@
 import 'package:expiro/features/app/presentation/statistics_card.dart';
+import 'package:expiro/features/authentication/authentication.dart';
 import 'package:expiro/features/home/home.dart';
 import 'package:expiro/features/home/presentation/alerts_card.dart';
 import 'package:flutter/material.dart';
@@ -112,6 +113,13 @@ class HomePage extends StatelessWidget {
                   ),
                 ],
               ),
+            ),
+            const SizedBox(height: kPadding * 2),
+            OutlinedButton(
+              onPressed: () {
+                AuthCubit.instance.logout();
+              },
+              child: const Text('Log Out'),
             ),
           ],
         ),
