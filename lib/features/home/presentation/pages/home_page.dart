@@ -3,6 +3,7 @@ import 'package:expiro/features/authentication/authentication.dart';
 import 'package:expiro/features/home/home.dart';
 import 'package:expiro/features/home/presentation/alerts_card.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../configurations/configurations.dart';
 
@@ -21,7 +22,7 @@ class HomePage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Hello Guest!',
+              'Hello, ${context.watch<AuthCubit>().state.user?.name ?? "Guest!"}',
               style: theme.textTheme.bodyLarge?.copyWith(
                 color: theme.primaryColor,
               ),
