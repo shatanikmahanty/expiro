@@ -55,7 +55,7 @@ class HomePage extends StatelessWidget {
               title: 'Alerts',
             ),
             Container(
-              height: MediaQuery.of(context).size.height * 0.2,
+              height: MediaQuery.of(context).size.height * 0.15,
               padding: const EdgeInsets.symmetric(
                 vertical: kPadding * 2,
               ),
