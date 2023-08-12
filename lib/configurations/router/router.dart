@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../features/app/app.dart';
+import '../../features/authentication/presentation/pages/login_routes.dart';
 import '../configurations.dart';
 
 export 'package:auto_route/auto_route.dart';
@@ -18,7 +19,19 @@ class AppRouter extends $AppRouter {
 
   @override
   final List<AutoRoute> routes = [
-    AutoRoute(path: '*', page: UnknownRoute.page),
+    AutoRoute(
+      path: '*',
+      page: UnknownRoute.page,
+    ),
+    AutoRoute(
+      path: '/onboarding',
+      page: OnboardingRoute.page,
+    ),
+    AutoRoute(
+      path: '/login',
+      page: LoginRouter.page,
+      children: loginRoutes,
+    ),
     AutoRoute(
       path: '/app-home',
       page: AppHomeRoute.page,

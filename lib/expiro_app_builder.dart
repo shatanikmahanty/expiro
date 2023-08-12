@@ -1,5 +1,6 @@
 import 'package:djangoflow_app/djangoflow_app.dart';
 import 'package:djangoflow_app_links/djangoflow_app_links.dart';
+import 'package:expiro/features/authentication/authentication.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -25,6 +26,9 @@ class ExpiroAppBuilder extends AppBuilder {
           providers: [
             BlocProvider<AppCubit>(
               create: (context) => AppCubit.instance,
+            ),
+            BlocProvider<AuthCubit>(
+              create: (context) => AuthCubit.instance,
             ),
             BlocProvider<AppLinksCubit>(
               create: (context) => AppLinksCubit(
@@ -61,9 +65,9 @@ class ExpiroAppBuilder extends AppBuilder {
               routerDelegate: appRouter.delegate(
                 deepLinkBuilder: (_) => initialDeepLink != null
                     ? DeepLink.path(initialDeepLink)
-                    : const DeepLink(
+                    : DeepLink(
                         [
-                          AppHomeRoute(),
+                          OnboardingRoute(),
                         ],
                       ),
                 // List of global navigation obsersers here
