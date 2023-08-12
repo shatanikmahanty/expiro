@@ -10,6 +10,9 @@ class ProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Column(
         children: [
+          const SizedBox(
+            height: kPadding * 2,
+          ),
           const UserInfo(),
           Expanded(
             child: Padding(
