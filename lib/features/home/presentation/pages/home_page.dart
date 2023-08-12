@@ -1,5 +1,6 @@
 import 'package:expiro/features/app/presentation/statistics_card.dart';
 import 'package:expiro/features/home/home.dart';
+import 'package:expiro/features/home/presentation/alerts_card.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../configurations/configurations.dart';
@@ -46,6 +47,35 @@ class HomePage extends StatelessWidget {
                   SizedBox(width: kPadding / 2),
                   Expanded(
                     child: StatisticsCard(title: 'Expired', data: '2'),
+                  ),
+                ],
+              ),
+            ),
+            const _ContentHeading(
+              title: 'Alerts',
+            ),
+            Container(
+              height: MediaQuery.of(context).size.height * 0.2,
+              padding: const EdgeInsets.symmetric(
+                vertical: kPadding * 2,
+              ),
+              child: ListView(
+                shrinkWrap: true,
+                scrollDirection: Axis.horizontal,
+                children: const [
+                  AlertsCard(
+                    product: 'Fanta',
+                    alertIcon: Icons.info,
+                    alertType: 'Expiring Soon',
+                    productUrl:
+                        'https://assets.stickpng.com/images/580b57fbd9996e24bc43c10f.png',
+                  ),
+                  AlertsCard(
+                    product: 'Fanta',
+                    alertIcon: Icons.info,
+                    alertType: 'Expiring Soon',
+                    productUrl:
+                        'https://assets.stickpng.com/images/580b57fbd9996e24bc43c10f.png',
                   ),
                 ],
               ),

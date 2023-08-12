@@ -1,48 +1,74 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:expiro/configurations/configurations.dart';
 import 'package:flutter/material.dart';
 
 class AlertsCard extends StatelessWidget {
-  const AlertsCard(
-      {super.key, required this.alertType, required this.alertIcon, required this.product, required this.productUrl});
+  const AlertsCard({
+    super.key,
+    required this.alertType,
+    required this.alertIcon,
+    required this.product,
+    required this.productUrl,
+    this.alertIconColor = Colors.red,
+  });
 
   final String alertType;
   final String product;
   final String productUrl;
   final IconData alertIcon;
-
+  final Color alertIconColor;
 
   @override
-  Widget build(BuildContext context) => Card(
-        child: Row(
-          children: [
-            CachedNetworkImage(imageUrl: productUrl),
-            Column(
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return Card(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(
+          kPadding * 1.5,
+        ),
+        side: const BorderSide(
+          color: Colors.grey,
+          width: 0.5,
+        ),
+      ),
+      child: Row(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(kPadding * 2),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Row(
                   children: [
                     Text(
                       alertType,
-                      style: const TextStyle(
-                        fontSize: 20,
+                      style: theme.textTheme.titleMedium?.copyWith(
                         fontWeight: FontWeight.bold,
                       ),
                     ),
+                    const SizedBox(width: kPadding),
                     Icon(
                       alertIcon,
-                      color: Colors.red,
+                      size: 30,
+                      color: alertIconColor,
                     ),
                   ],
                 ),
                 Text(
                   product,
-                  style: const TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                  ),
+                  style: theme.textTheme.labelLarge?.copyWith(),
                 ),
               ],
-            )
-          ],
-        ),
-      );
+            ),
+          ),
+          CachedNetworkImage(
+            imageUrl: productUrl,
+            height: 100,
+            width: 80,
+          ),
+        ],
+      ),
+    );
+  }
 }
