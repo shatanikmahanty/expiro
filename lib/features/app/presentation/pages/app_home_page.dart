@@ -42,9 +42,9 @@ class AppHomePage extends StatelessWidget with AutoRouteWrapper {
         },
         animationCurve: Curves.easeInOut,
         resizeToAvoidBottomInset: false,
-        appBarBuilder: (context, tabsRouter) => ExpiroAppBar(
+        appBarBuilder: (context, tabsRouter) => const ExpiroAppBar(
           centerTitle: true,
-          appBarTitleText: kAppTitle.toUpperCase(),
+          appBarTitleText: kAppBarTitle,
         ),
         bottomNavigationBuilder: (context, tabsRouter) => SafeArea(
           bottom: true,

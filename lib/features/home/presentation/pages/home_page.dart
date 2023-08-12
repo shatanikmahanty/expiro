@@ -1,4 +1,5 @@
 import 'package:expiro/features/app/presentation/statistics_card.dart';
+import 'package:expiro/features/home/home.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../configurations/configurations.dart';
@@ -49,8 +50,58 @@ class HomePage extends StatelessWidget {
                 ],
               ),
             ),
+            const _ContentHeading(
+              title: 'Explore',
+            ),
+            Container(
+              height: MediaQuery.of(context).size.height * 0.3,
+              padding: const EdgeInsets.symmetric(
+                vertical: kPadding * 2,
+              ),
+              child: ListView(
+                shrinkWrap: true,
+                scrollDirection: Axis.horizontal,
+                children: const [
+                  ExploreCard(
+                    title: 'How to recycle',
+                    subtitle: 'by New York Times',
+                    imageUrl:
+                        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQHJfFJQ8MYypeksy4QQU3kdSvyjZS53E-TdQ&usqp=CAU',
+                  ),
+                  ExploreCard(
+                    title: 'How to recycle',
+                    subtitle: 'by New York Times',
+                    imageUrl:
+                        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQHJfFJQ8MYypeksy4QQU3kdSvyjZS53E-TdQ&usqp=CAU',
+                  ),
+                  ExploreCard(
+                    title: 'How to recycle',
+                    subtitle: 'by New York Times',
+                    imageUrl:
+                        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQHJfFJQ8MYypeksy4QQU3kdSvyjZS53E-TdQ&usqp=CAU',
+                  ),
+                ],
+              ),
+            ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class _ContentHeading extends StatelessWidget {
+  const _ContentHeading({required this.title});
+
+  final String title;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return Text(
+      title,
+      style: theme.textTheme.labelLarge?.copyWith(
+        color: theme.primaryColor,
       ),
     );
   }

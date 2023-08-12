@@ -76,6 +76,7 @@ class AppTheme {
           borderRadius: BorderRadius.circular(kButtonRadius),
         ),
         color: Colors.white,
+        surfaceTintColor: Colors.white,
       ),
     );
   }
