@@ -55,16 +55,12 @@ class AppHomePage extends StatelessWidget with AutoRouteWrapper {
               type: BottomNavigationBarType.fixed,
               items: const [
                 BottomNavigationBarItem(
-                  icon: Icon(
-                    Icons.home_outlined,
-                  ),
+                  icon: Icon(Icons.home_outlined),
                   activeIcon: Icon(Icons.home),
                   label: 'Home',
                 ),
                 BottomNavigationBarItem(
-                  icon: Icon(
-                    Icons.list_outlined,
-                  ),
+                  icon: Icon(Icons.list_outlined),
                   activeIcon: Icon(Icons.list_outlined),
                   label: 'Lists',
                 ),

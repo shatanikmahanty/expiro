@@ -10,4 +10,5 @@ const kAppTitle = 'Expiro';
 
 const kApiEndpoint = ''; //TODO add when available
 
-const kFontFamily = FontFamily.quando;
+const kBrandFontFamily = FontFamily.quando;
+const kFontFamily = FontFamily.roboto;

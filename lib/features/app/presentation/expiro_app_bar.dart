@@ -34,6 +34,7 @@ class ExpiroAppBar extends StatelessWidget implements PreferredSizeWidget {
                 appBarTitleText!,
                 style: theme.textTheme.headlineSmall?.copyWith(
                   color: theme.primaryColor,
+                  fontFamily: kBrandFontFamily,
                   fontWeight: FontWeight.w500,
                 ),
               )

@@ -59,6 +59,10 @@ flutter:
     - family: Quando
       fonts:
         - asset: assets/fonts/Quando-Regular.ttf
+    - family: Roboto
+      fonts:
+        - asset: assets/fonts/Roboto-Regular.ttf
+
 
 flutter_gen:
   output: lib/configurations/constants

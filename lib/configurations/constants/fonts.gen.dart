@@ -12,4 +12,7 @@ class FontFamily {
 
   /// Font family: Quando
   static const String quando = 'Quando';
+
+  /// Font family: Roboto
+  static const String roboto = 'Roboto';
 }
