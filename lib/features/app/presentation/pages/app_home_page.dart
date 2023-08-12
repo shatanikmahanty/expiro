@@ -11,6 +11,8 @@ class AppHomePage extends StatelessWidget with AutoRouteWrapper {
   Widget build(BuildContext context) => AutoTabsScaffold(
         routes: const [
           HomeRoute(),
+          ListRoute(),
+          ProfileRoute(),
         ],
         transitionBuilder: (context, child, animation) {
           const begin = Offset(1.0, 0.0);

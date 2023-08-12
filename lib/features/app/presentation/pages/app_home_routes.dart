@@ -6,4 +6,12 @@ final appHomeRoutes = [
     path: 'home',
     page: HomeRoute.page,
   ),
+  AutoRoute(
+    path: 'profile',
+    page: ProfileRoute.page,
+  ),
+  AutoRoute(
+    path: 'list',
+    page: ListRoute.page,
+  ),
 ];
