@@ -11,6 +11,8 @@ class AppHomePage extends StatelessWidget with AutoRouteWrapper {
   Widget build(BuildContext context) => AutoTabsScaffold(
         routes: const [
           HomeRoute(),
+          ListRoute(),
+          ProfileRoute(),
         ],
         transitionBuilder: (context, child, animation) {
           const begin = Offset(1.0, 0.0);
@@ -42,9 +44,9 @@ class AppHomePage extends StatelessWidget with AutoRouteWrapper {
         },
         animationCurve: Curves.easeInOut,
         resizeToAvoidBottomInset: false,
-        appBarBuilder: (context, tabsRouter) => const ExpiroAppBar(
+        appBarBuilder: (context, tabsRouter) => ExpiroAppBar(
           centerTitle: true,
-          appBarTitleText: kAppBarTitle,
+          appBarTitleText: getAppBarText(tabsRouter.activeIndex),
         ),
         bottomNavigationBuilder: (context, tabsRouter) => SafeArea(
           bottom: true,
@@ -77,4 +79,17 @@ class AppHomePage extends StatelessWidget with AutoRouteWrapper {
 
   @override
   Widget wrappedRoute(BuildContext context) => this;
+
+  String getAppBarText(int activeIndex) {
+    switch (activeIndex) {
+      case 0:
+        return kAppBarTitle;
+      case 1:
+        return 'Lists';
+      case 2:
+        return 'Profile';
+      default:
+        return 'Not Found';
+    }
+  }
 }
