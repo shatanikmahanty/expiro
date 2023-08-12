@@ -13,7 +13,7 @@ class AuthGuard extends AutoRedirectGuard {
       (state) {
         if (state.user != null) {
           reevaluate(
-            strategy: const ReevaluationStrategy.removeAllAndPush(
+            strategy: ReevaluationStrategy.removeAllAndPush(
               AppHomeRoute(),
             ),
           );

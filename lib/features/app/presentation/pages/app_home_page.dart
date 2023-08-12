@@ -63,13 +63,16 @@ class AppHomePage extends StatelessWidget with AutoRouteWrapper {
                 child: const Icon(Icons.add),
                 fabSize: ExpandableFabSize.regular,
                 backgroundColor: theme.primaryColor,
-                shape: const CircleBorder(),
+                heroTag: null,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(kButtonRadius * 2),
+                ),
               ),
               closeButtonBuilder: DefaultFloatingActionButtonBuilder(
                 child: const Icon(Icons.close),
                 fabSize: ExpandableFabSize.small,
+                heroTag: null,
                 backgroundColor: theme.primaryColor,
-                shape: const CircleBorder(),
               ),
               overlayStyle: ExpandableFabOverlayStyle(
                 // color: Colors.black.withOpacity(0.5),
@@ -77,11 +80,15 @@ class AppHomePage extends StatelessWidget with AutoRouteWrapper {
               ),
               children: [
                 FloatingActionButton(
+                  heroTag: null,
                   tooltip: 'Add Manually',
-                  onPressed: () {},
+                  onPressed: () {
+                    context.router.push(const ProductRouter());
+                  },
                   child: const Icon(Icons.edit),
                 ),
                 FloatingActionButton(
+                  heroTag: null,
                   tooltip: 'Scan QR Code',
                   onPressed: () {},
                   child: const Icon(
@@ -89,6 +96,7 @@ class AppHomePage extends StatelessWidget with AutoRouteWrapper {
                   ),
                 ),
                 FloatingActionButton(
+                  heroTag: null,
                   tooltip: 'Add Image',
                   onPressed: () {},
                   child: const Icon(

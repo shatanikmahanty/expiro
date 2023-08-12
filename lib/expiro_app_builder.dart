@@ -65,7 +65,7 @@ class ExpiroAppBuilder extends AppBuilder {
               routerDelegate: appRouter.delegate(
                 deepLinkBuilder: (_) => initialDeepLink != null
                     ? DeepLink.path(initialDeepLink)
-                    : const DeepLink(
+                    : DeepLink(
                         [
                           AppHomeRoute(),
                         ],
@@ -90,7 +90,7 @@ class ExpiroAppBuilder extends AppBuilder {
                                     path,
                                     onFailure: (failure) {
                                       appRouter.navigate(
-                                        const AppHomeRoute(),
+                                        AppHomeRoute(),
                                       );
                                     },
                                   );

@@ -1,3 +1,4 @@
+import 'package:expiro/features/product/presentation/pages/product_routes.dart';
 import 'package:flutter/material.dart';
 
 import '../../features/app/app.dart';
@@ -39,6 +40,12 @@ class AppRouter extends $AppRouter {
       children: appHomeRoutes,
       guards: [AuthGuard()],
     ),
+    AutoRoute(
+      path: '/product',
+      page: ProductRouter.page,
+      children: productRoutes,
+      guards: [AuthGuard()],
+    )
   ];
 }
 
