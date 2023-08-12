@@ -10,6 +10,7 @@ class AppUser with _$AppUser {
     required String id,
     required String name,
     @JsonKey(includeIfNull: false) String? email,
+    @JsonKey(includeIfNull: false) String? profilePicture,
   }) = _AppUser;
 
   factory AppUser.fromJson(Map<String, dynamic> json) =>

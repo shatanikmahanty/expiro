@@ -10,6 +10,7 @@ _$_AppUser _$$_AppUserFromJson(Map<String, dynamic> json) => _$_AppUser(
       id: json['id'] as String,
       name: json['name'] as String,
       email: json['email'] as String?,
+      profilePicture: json['profilePicture'] as String?,
     );
 
 Map<String, dynamic> _$$_AppUserToJson(_$_AppUser instance) {
@@ -25,5 +26,6 @@ Map<String, dynamic> _$$_AppUserToJson(_$_AppUser instance) {
   }
 
   writeNotNull('email', instance.email);
+  writeNotNull('profilePicture', instance.profilePicture);
   return val;
 }

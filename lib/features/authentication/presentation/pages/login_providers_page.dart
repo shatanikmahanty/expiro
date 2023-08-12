@@ -61,6 +61,7 @@ class _LoginSheet extends StatelessWidget {
                   id: credentials.idToken,
                   name: user.name ?? 'Anonymous User',
                   email: user.email,
+                  profilePicture: user.pictureUrl.toString(),
                 ),
               );
             },
