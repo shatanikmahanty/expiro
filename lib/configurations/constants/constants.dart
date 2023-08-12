@@ -7,6 +7,7 @@ export 'assets.gen.dart';
 // export 'fonts.gen.dart'; //Uncomment if font is needed
 
 const kAppTitle = 'Expiro';
+const kAppBarTitle = 'exPIRO';
 
 const kApiEndpoint = ''; //TODO add when available
 
