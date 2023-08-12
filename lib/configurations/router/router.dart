@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../features/app/app.dart';
 import '../../features/authentication/presentation/pages/login_routes.dart';
 import '../configurations.dart';
+import 'auth_guard.dart';
 
 export 'package:auto_route/auto_route.dart';
 
@@ -36,6 +37,7 @@ class AppRouter extends $AppRouter {
       path: '/app-home',
       page: AppHomeRoute.page,
       children: appHomeRoutes,
+      guards: [AuthGuard()],
     ),
   ];
 }

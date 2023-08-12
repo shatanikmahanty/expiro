@@ -25,18 +25,19 @@ class OnboardingPage extends StatelessWidget {
                   SingleOnboardingPage(
                     illustration: Assets.images.stomachPain.image(),
                     tagline:
-                        "Many of us have found ourselves using items even after they've passed their expiration date at least once",
+                        "Many of us have found ourselves using items even after they've"
+                        ' passed their expiration date at least once',
                   ),
                   SingleOnboardingPage(
                     illustration: Assets.images.schedule.image(),
-                    tagline: 'Harness the power of our intuitive swiping '
-                        'feature for building winning hackathon teams',
+                    tagline: "Stay on top of your product's"
+                        ' expiration dates with diligent tracking.',
                     flip: true,
                   ),
                   SingleOnboardingPage(
                     illustration: Assets.images.notifications.image(),
-                    tagline: 'Discover like-minded individuals and form'
-                        ' unbeatable teams to take on any challenge.',
+                    tagline: 'Get timely notifications before your '
+                        'products reach their expiration date.',
                   ),
                 ],
               ),

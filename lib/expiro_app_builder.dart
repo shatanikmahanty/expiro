@@ -65,9 +65,9 @@ class ExpiroAppBuilder extends AppBuilder {
               routerDelegate: appRouter.delegate(
                 deepLinkBuilder: (_) => initialDeepLink != null
                     ? DeepLink.path(initialDeepLink)
-                    : DeepLink(
+                    : const DeepLink(
                         [
-                          OnboardingRoute(),
+                          AppHomeRoute(),
                         ],
                       ),
                 // List of global navigation obsersers here

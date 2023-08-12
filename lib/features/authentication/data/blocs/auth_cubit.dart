@@ -1,3 +1,4 @@
+import 'package:expiro/features/authentication/data/repo/social_auth0_repo.dart';
 import 'package:expiro/utils/mixins/cubit_maybe_emit_mixin.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
@@ -63,7 +64,7 @@ class AuthCubit extends HydratedCubit<AuthState> with CubitMaybeEmit {
   }
 
   Future<void> logout() async {
-    //TODO logout server logic
+    await Auth0SocialService().logOut();
     emit(
       state.copyWith(
         user: null,

@@ -14,6 +14,9 @@ import 'package:flutter/services.dart';
 class $AssetsImagesGen {
   const $AssetsImagesGen();
 
+  /// File path: assets/images/auth0.png
+  AssetGenImage get auth0 => const AssetGenImage('assets/images/auth0.png');
+
   /// File path: assets/images/login.png
   AssetGenImage get login => const AssetGenImage('assets/images/login.png');
 
@@ -34,7 +37,7 @@ class $AssetsImagesGen {
 
   /// List of all assets
   List<dynamic> get values =>
-      [login, notifications, schedule, stomachPain, vectorBg];
+      [auth0, login, notifications, schedule, stomachPain, vectorBg];
 }
 
 class Assets {

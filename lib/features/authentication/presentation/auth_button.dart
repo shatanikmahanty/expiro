@@ -1,25 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:progress_builder/progress_builder.dart';
 
 import '../../../configurations/configurations.dart';
-import '../data/blocs/auth_cubit.dart';
 
 class AuthButton extends StatelessWidget {
   const AuthButton({
     Key? key,
     this.authButtonType = AuthButtonType.filled,
-    this.icon,
+    this.iconPath,
     this.label,
-    required this.provider,
-    this.onPressed,
+    required this.onPressed,
+    this.icon,
   }) : super(key: key);
 
   final AuthButtonType authButtonType;
+  final String? iconPath;
   final IconData? icon;
   final String? label;
-  final String provider;
-  final VoidCallback? onPressed;
+  final Future<void> Function() onPressed;
 
   @override
   Widget build(BuildContext context) => CircularProgressBuilder.adaptive(
@@ -32,10 +30,16 @@ class AuthButton extends StatelessWidget {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Icon(
-                            icon,
-                            size: kPadding * 4,
-                          ),
+                          if (iconPath != null)
+                            ImageIcon(
+                              AssetImage(iconPath!),
+                              color: Theme.of(context).primaryColor,
+                            )
+                          else
+                            Icon(
+                              icon,
+                              color: Theme.of(context).primaryColor,
+                            ),
                           const SizedBox(
                             width: kPadding * 2,
                           ),
@@ -47,7 +51,15 @@ class AuthButton extends StatelessWidget {
                 : authButtonType == AuthButtonType.outlined
                     ? OutlinedButton.icon(
                         onPressed: action,
-                        icon: Icon(icon),
+                        icon: iconPath != null
+                            ? ImageIcon(
+                                AssetImage(iconPath!),
+                                color: Theme.of(context).primaryColor,
+                              )
+                            : Icon(
+                                icon,
+                                color: Theme.of(context).primaryColor,
+                              ),
                         label: Padding(
                           padding: const EdgeInsets.all(kPadding * 2),
                           child: Text(label!),
@@ -55,17 +67,18 @@ class AuthButton extends StatelessWidget {
                       )
                     : IconButton(
                         onPressed: action,
-                        icon: Icon(
-                          icon,
-                          color: Theme.of(context).primaryColor,
-                        ),
+                        icon: iconPath != null
+                            ? ImageIcon(
+                                AssetImage(iconPath!),
+                                color: Theme.of(context).primaryColor,
+                              )
+                            : Icon(
+                                icon,
+                                color: Theme.of(context).primaryColor,
+                              ),
                       ),
         action: (_) async {
-          if (onPressed != null) {
-            onPressed?.call();
-          } else {
-            await context.read<AuthCubit>().loginWithProvider(provider);
-          }
+          await onPressed.call();
         },
       );
 }

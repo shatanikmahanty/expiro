@@ -21,6 +21,9 @@ class DescriptionContent extends StatelessWidget {
       ),
       child: Column(
         children: [
+          const SizedBox(
+            height: kPadding * 2,
+          ),
           GestureDetector(
             onLongPress: () {
               AppCubit.instance.toggleEnvironment();
@@ -28,7 +31,7 @@ class DescriptionContent extends StatelessWidget {
             child: Text(
               kAppBarTitle,
               textAlign: TextAlign.center,
-              style: textTheme.headlineSmall?.copyWith(
+              style: textTheme.headlineLarge?.copyWith(
                 color: theme.colorScheme.primary,
                 fontFamily: 'Quando',
               ),
@@ -40,7 +43,7 @@ class DescriptionContent extends StatelessWidget {
           Text(
             tagline,
             textAlign: TextAlign.center,
-            style: textTheme.titleSmall?.copyWith(
+            style: textTheme.titleMedium?.copyWith(
               fontWeight: FontWeight.w400,
             ),
           ),

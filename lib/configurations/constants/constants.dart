@@ -13,3 +13,6 @@ const kApiEndpoint = ''; //TODO add when available
 
 const kBrandFontFamily = FontFamily.quando;
 const kFontFamily = FontFamily.roboto;
+
+//Oauth
+const kAuth0ClientId = '';
