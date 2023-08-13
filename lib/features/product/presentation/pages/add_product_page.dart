@@ -1,6 +1,10 @@
 import 'package:expiro/configurations/configurations.dart';
 import 'package:expiro/features/app/app.dart';
+import 'package:expiro/features/product/data/models/product_model.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../data/blocs/product_cubit.dart';
 
 @RoutePage()
 class AddProductPage extends StatefulWidget {
@@ -13,6 +17,17 @@ class AddProductPage extends StatefulWidget {
 class _AddProductPageState extends State<AddProductPage> {
   DateTime? _manufacturedDate;
   DateTime? _expiryDate;
+  String? productCategory;
+  String? productStorage;
+  String? productRecyclable;
+
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _quantityController = TextEditingController();
+  final TextEditingController _specificInstructionsController =
+      TextEditingController();
+  final TextEditingController _manufacturedDateController =
+      TextEditingController();
+  final TextEditingController _expiryDateController = TextEditingController();
 
   Future<void> _selectManufacturedDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
@@ -24,6 +39,8 @@ class _AddProductPageState extends State<AddProductPage> {
     if (picked != null && picked != _manufacturedDate) {
       setState(() {
         _manufacturedDate = picked;
+        _manufacturedDateController.text =
+            '${_manufacturedDate?.toLocal()}'.split(' ')[0];
       });
     }
   }
@@ -38,6 +55,7 @@ class _AddProductPageState extends State<AddProductPage> {
     if (picked != null && picked != _expiryDate) {
       setState(() {
         _expiryDate = picked;
+        _expiryDateController.text = '${_expiryDate?.toLocal()}'.split(' ')[0];
       });
     }
   }
@@ -67,44 +85,51 @@ class _AddProductPageState extends State<AddProductPage> {
                       padding: const EdgeInsets.all(16.0),
                       child: Column(
                         children: [
-                          const TextField(
-                            decoration: InputDecoration(labelText: 'Name'),
+                          TextField(
+                            controller: _nameController,
+                            decoration: const InputDecoration(
+                              labelText: 'Name',
+                              labelStyle: TextStyle(
+                                color: Colors.grey,
+                              ),
+                            ),
                           ),
                           const SizedBox(height: 12),
-                          const TextField(
-                            decoration: InputDecoration(labelText: 'Quantity'),
+                          TextField(
+                            keyboardType: TextInputType.number,
+                            controller: _quantityController,
+                            decoration: const InputDecoration(
+                              labelText: 'Quantity',
+                              labelStyle: TextStyle(
+                                color: Colors.grey,
+                              ),
+                            ),
                           ),
                           const SizedBox(height: 12),
                           GestureDetector(
                             onTap: () => _selectManufacturedDate(context),
                             child: TextFormField(
+                              controller: _manufacturedDateController,
                               decoration: const InputDecoration(
                                 labelText: 'Manufactured Date',
                                 suffixIcon: Icon(Icons.calendar_today),
                               ),
                               enabled: false,
-                              initialValue: _manufacturedDate != null
-                                  ? '${_manufacturedDate?.toLocal()}'
-                                      .split(' ')[0]
-                                  : '',
                             ),
                           ),
                           const SizedBox(height: 12),
                           GestureDetector(
                             onTap: () => _selectExpiryDate(context),
                             child: TextFormField(
+                              controller: _expiryDateController,
                               decoration: const InputDecoration(
                                 labelText: 'Expiry Date',
                                 suffixIcon: Icon(Icons.calendar_today),
                               ),
                               enabled: false,
-                              initialValue: _expiryDate != null
-                                  ? '${_expiryDate?.toLocal()}'.split(' ')[0]
-                                  : '',
                             ),
                           ),
                           const SizedBox(height: 12),
-                          // Repeat RadioListTile for other categories
                         ],
                       ),
                     ),
@@ -141,10 +166,12 @@ class _AddProductPageState extends State<AddProductPage> {
                             contentPadding: EdgeInsets.zero,
                             title: Text(productCategoryList[index]),
                             value: productCategoryList[index],
-                            groupValue: null,
+                            groupValue: productCategory,
                             // Add your group value here
                             onChanged: (value) {
-                              // Handle selection
+                              setState(() {
+                                productCategory = value;
+                              });
                             },
                           ),
                           itemCount: productCategoryList.length,
@@ -185,19 +212,27 @@ class _AddProductPageState extends State<AddProductPage> {
                             contentPadding: EdgeInsets.zero,
                             title: Text(productStorageList[index]),
                             value: productStorageList[index],
-                            groupValue: null,
+                            groupValue: productStorage,
                             // Add your group value here
                             onChanged: (value) {
-                              // Handle selection
+                              setState(() {
+                                productStorage = value;
+                              });
                             },
                           ),
                           itemCount: productStorageList.length,
                         ),
                       ),
-                      const SizedBox(height: 12),
-                      const TextField(
-                        decoration: InputDecoration(
+                      const SizedBox(
+                        height: kPadding * 1.5,
+                      ),
+                      TextField(
+                        controller: _specificInstructionsController,
+                        decoration: const InputDecoration(
                           labelText: 'Add specific instructions',
+                          labelStyle: TextStyle(
+                            color: Colors.grey,
+                          ),
                         ),
                       ),
                     ],
@@ -225,20 +260,24 @@ class _AddProductPageState extends State<AddProductPage> {
                           contentPadding: EdgeInsets.zero,
                           title: const Text('♻️  Recyclable'),
                           value: 'Recyclable',
-                          groupValue: null,
+                          groupValue: productRecyclable,
                           // Add your group value here
                           onChanged: (value) {
-                            // Handle selection
+                            setState(() {
+                              productRecyclable = value;
+                            });
                           },
                         ),
                         RadioListTile(
                           contentPadding: EdgeInsets.zero,
                           title: const Text('⭕  Non Recyclable'),
                           value: 'Non Recyclable',
-                          groupValue: null,
+                          groupValue: productRecyclable,
                           // Add your group value here
                           onChanged: (value) {
-                            // Handle selection
+                            setState(() {
+                              productRecyclable = value;
+                            });
                           },
                         ),
                       ]),
@@ -248,8 +287,67 @@ class _AddProductPageState extends State<AddProductPage> {
               ),
               const SizedBox(height: 20),
               ElevatedButton(
-                onPressed: () {
-                  // Handle submission
+                onPressed: () async {
+                  if (_nameController.text.isEmpty) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('Please fill name'),
+                      ),
+                    );
+                    return;
+                  } else if (_quantityController.text.isEmpty ||
+                      int.tryParse(_quantityController.text) == null) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('Please fill quantity properly'),
+                      ),
+                    );
+                    return;
+                  } else if (_expiryDate == null || _manufacturedDate == null) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('Please select a date'),
+                      ),
+                    );
+                    return;
+                  } else if (productCategory == null) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('Please select a category'),
+                      ),
+                    );
+                    return;
+                  } else if (productStorage == null) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('Please select a storage option'),
+                      ),
+                    );
+                    return;
+                  } else if (productRecyclable == null) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('Please select a recyclable option'),
+                      ),
+                    );
+                    return;
+                  } else {
+                    //Save data to mongo
+                    final product = ProductModel(
+                      id: '',
+                      name: _nameController.text,
+                      quantity: int.tryParse(_quantityController.text) ?? 1,
+                      expiryDate: _expiryDate.toString(),
+                      manufactureDate: _manufacturedDate.toString(),
+                      category: productCategory!,
+                      storage: productStorage!,
+                      recyclable: productRecyclable!,
+                      image: '',
+                      storageInstructions: _specificInstructionsController.text,
+                    );
+
+                    await context.read<ProductCubit>().addProduct(product);
+                  }
                 },
                 child: const Text('Submit'),
               ),
