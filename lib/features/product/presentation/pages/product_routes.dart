@@ -8,6 +8,6 @@ final productRoutes = [
   ),
   // AutoRoute(
   //   path: 'scan',
-  //   page: ScanRoute.page,
+  //   page: ScanProductRoute.page,
   // ),
 ];

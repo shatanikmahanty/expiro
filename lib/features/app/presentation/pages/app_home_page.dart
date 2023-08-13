@@ -1,3 +1,4 @@
+import 'package:barcode_scan2/platform_wrapper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_expandable_fab/flutter_expandable_fab.dart';
 
@@ -90,7 +91,10 @@ class AppHomePage extends StatelessWidget with AutoRouteWrapper {
                 FloatingActionButton(
                   heroTag: null,
                   tooltip: 'Scan QR Code',
-                  onPressed: () {},
+                  onPressed: () async {
+                    final result = await BarcodeScanner.scan();
+                    print('result -------------------> ${result.rawContent}');
+                  },
                   child: const Icon(
                     Icons.qr_code_scanner,
                   ),

@@ -24,6 +24,7 @@ environment:
 dependencies:
   auth0_flutter: ^1.2.1
   auto_route: ^7.8.0
+  barcode_scan2: ^4.2.4
   cached_network_image: ^3.2.3
   cloud_firestore: ^4.8.4
   djangoflow_app: ^3.2.0
@@ -41,6 +42,7 @@ dependencies:
   font_awesome_flutter: ^10.5.0
   freezed_annotation: ^2.4.1
   hydrated_bloc: ^9.1.2
+  image_picker: ^1.0.2
   json_annotation: ^4.8.1
   mongo_dart: ^0.9.1
   progress_builder: ^1.1.3
