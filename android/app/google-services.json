@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "218695177432",
+    "project_id": "expiro-baf26",
+    "storage_bucket": "expiro-baf26.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:218695177432:android:357db5347d39a24210f3ad",
+        "android_client_info": {
+          "package_name": "com.codersincubicle.expiro.expiro"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "218695177432-6nmbsi50mogo611gegpt13d8pqdat468.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBFdmGc8bdOu9RFkqwjx5UVTz81J60AzR8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "218695177432-6nmbsi50mogo611gegpt13d8pqdat468.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
