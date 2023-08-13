@@ -1,6 +1,8 @@
 import 'package:djangoflow_app/djangoflow_app.dart';
 import 'package:djangoflow_app_links/djangoflow_app_links.dart';
 import 'package:expiro/features/authentication/authentication.dart';
+import 'package:expiro/features/product/data/blocs/product_cubit.dart';
+import 'package:expiro/features/product/data/repository/product_repository.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -22,6 +24,9 @@ class ExpiroAppBuilder extends AppBuilder {
             RepositoryProvider<AppLinksRepository>.value(
               value: appLinksRepository,
             ),
+            RepositoryProvider<ProductRepository>(
+              create: (context) => ProductRepository(),
+            ),
           ],
           providers: [
             BlocProvider<AppCubit>(
@@ -36,6 +41,11 @@ class ExpiroAppBuilder extends AppBuilder {
                 context.read<AppLinksRepository>(),
               ),
               lazy: false,
+            ),
+            BlocProvider<ProductCubit>(
+              create: (context) => ProductCubit(
+                context.read<ProductRepository>(),
+              ),
             ),
           ],
           builder: (context) => AppCubitConsumer(

@@ -9,11 +9,13 @@ class ExploreCard extends StatelessWidget {
       {super.key,
       required this.title,
       required this.subtitle,
-      required this.imageUrl});
+      required this.imageUrl,
+      required this.onTap});
 
   final String title;
   final String subtitle;
   final String imageUrl;
+  final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -91,7 +93,9 @@ class ExploreCard extends StatelessWidget {
                             ),
                           ),
                         ),
-                        onPressed: () {},
+                        onPressed: () {
+                          onTap();
+                        },
                         icon: Transform.rotate(
                           angle: pi / 3,
                           child: const Icon(

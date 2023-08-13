@@ -22,7 +22,9 @@ class ProductState with _$ProductState {
 class ProductCubit extends Cubit<ProductState> {
   final ProductRepository _productRepository;
 
-  ProductCubit(this._productRepository) : super(const ProductState());
+  ProductCubit(this._productRepository) : super(const ProductState()) {
+    fetchProducts();
+  }
 
   Future<void> fetchProducts() async {
     final user = AuthCubit.instance.state.user;
@@ -36,6 +38,7 @@ class ProductCubit extends Cubit<ProductState> {
           products: products,
         ),
       );
+      print(products.length);
     } catch (e) {
       emit(state.copyWith(isLoading: false));
     }
@@ -51,5 +54,36 @@ class ProductCubit extends Cubit<ProductState> {
     } catch (e) {
       emit(state.copyWith(isLoading: false));
     }
+  }
+
+  List<ProductModel?> getExpiredProducts() {
+    final expiredProducts = state.products.map((e) {
+      if (DateTime.parse(e.expiryDate).isAfter(DateTime.now())) {
+        return e;
+      }
+    }).toList();
+    return expiredProducts;
+  }
+
+  List<ProductModel?> getSoonToExpireProducts() {
+    final soonToExpiredProducts = state.products.map((e) {
+      if (DateTime.now()
+          .add(const Duration(days: 15))
+          .isAfter(DateTime.parse(e.expiryDate))) {
+        return e;
+      }
+    }).toList();
+    return soonToExpiredProducts;
+  }
+
+  List<ProductModel?> getGoodToUseProducts() {
+    final goodToUseProducts = state.products.map((e) {
+      if (DateTime.now()
+          .add(const Duration(days: 15))
+          .isBefore(DateTime.parse(e.expiryDate))) {
+        return e;
+      }
+    }).toList();
+    return goodToUseProducts;
   }
 }

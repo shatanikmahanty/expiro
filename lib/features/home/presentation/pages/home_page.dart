@@ -4,8 +4,10 @@ import 'package:expiro/features/home/data/blocs/explore_cubit.dart';
 import 'package:expiro/features/home/data/repository/explore_repository.dart';
 import 'package:expiro/features/home/home.dart';
 import 'package:expiro/features/home/presentation/alerts_card.dart';
+import 'package:expiro/features/product/data/blocs/product_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 import '../../../../configurations/configurations.dart';
 
@@ -30,8 +32,8 @@ class HomePage extends StatelessWidget {
               ),
             ),
             const SizedBox(height: kPadding * 2),
-            const Padding(
-              padding: EdgeInsets.symmetric(
+            Padding(
+              padding: const EdgeInsets.symmetric(
                 vertical: kPadding * 2,
               ),
               child: Row(
@@ -39,18 +41,36 @@ class HomePage extends StatelessWidget {
                   Expanded(
                     child: StatisticsCard(
                       title: 'Expiring Soon',
-                      data: '2',
-                      color: Color(0xffE46962),
+                      data: context
+                          .read<ProductCubit>()
+                          .getSoonToExpireProducts()
+                          .length
+                          .toString(),
+                      color: const Color(0xffE46962),
                       textColor: Colors.white,
                     ),
                   ),
-                  SizedBox(width: kPadding / 2),
+                  const SizedBox(width: kPadding / 2),
                   Expanded(
-                    child: StatisticsCard(title: 'Good to Use', data: '5'),
+                    child: StatisticsCard(
+                      title: 'Good to Use',
+                      data: context
+                          .read<ProductCubit>()
+                          .getGoodToUseProducts()
+                          .length
+                          .toString(),
+                    ),
                   ),
-                  SizedBox(width: kPadding / 2),
+                  const SizedBox(width: kPadding / 2),
                   Expanded(
-                    child: StatisticsCard(title: 'Expired', data: '2'),
+                    child: StatisticsCard(
+                      title: 'Expired',
+                      data: context
+                          .read<ProductCubit>()
+                          .getExpiredProducts()
+                          .length
+                          .toString(),
+                    ),
                   ),
                 ],
               ),
@@ -113,6 +133,13 @@ class HomePage extends StatelessWidget {
                                         title: blog.title,
                                         subtitle: blog.subtitle,
                                         imageUrl: blog.image,
+                                        onTap: () {
+                                          launchUrlString(
+                                            blog.launchUrl,
+                                            mode:
+                                                LaunchMode.externalApplication,
+                                          );
+                                        },
                                       );
                                     },
                                     shrinkWrap: true,

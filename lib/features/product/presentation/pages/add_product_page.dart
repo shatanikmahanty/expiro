@@ -3,6 +3,7 @@ import 'package:expiro/features/app/app.dart';
 import 'package:expiro/features/product/data/models/product_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:progress_builder/progress_builder.dart';
 
 import '../../data/blocs/product_cubit.dart';
 
@@ -286,53 +287,64 @@ class _AddProductPageState extends State<AddProductPage> {
                 ),
               ),
               const SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: () async {
-                  if (_nameController.text.isEmpty) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text('Please fill name'),
-                      ),
-                    );
-                    return;
-                  } else if (_quantityController.text.isEmpty ||
-                      int.tryParse(_quantityController.text) == null) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text('Please fill quantity properly'),
-                      ),
-                    );
-                    return;
-                  } else if (_expiryDate == null || _manufacturedDate == null) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text('Please select a date'),
-                      ),
-                    );
-                    return;
-                  } else if (productCategory == null) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text('Please select a category'),
-                      ),
-                    );
-                    return;
-                  } else if (productStorage == null) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text('Please select a storage option'),
-                      ),
-                    );
-                    return;
-                  } else if (productRecyclable == null) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text('Please select a recyclable option'),
-                      ),
-                    );
-                    return;
-                  } else {
-                    //Save data to mongo
+              Center(
+                child: CircularProgressBuilder(
+                  builder: (context, action, error) => ElevatedButton(
+                    onPressed: () async {
+                      if (_nameController.text.isEmpty) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('Please fill name'),
+                          ),
+                        );
+                        return;
+                      } else if (_quantityController.text.isEmpty ||
+                          int.tryParse(_quantityController.text) == null) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('Please fill quantity properly'),
+                          ),
+                        );
+                        return;
+                      } else if (_expiryDate == null ||
+                          _manufacturedDate == null) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('Please select a date'),
+                          ),
+                        );
+                        return;
+                      } else if (productCategory == null) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('Please select a category'),
+                          ),
+                        );
+                        return;
+                      } else if (productStorage == null) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('Please select a storage option'),
+                          ),
+                        );
+                        return;
+                      } else if (productRecyclable == null) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('Please select a recyclable option'),
+                          ),
+                        );
+                        return;
+                      } else {
+                        action?.call();
+                      }
+                    },
+                    child: const Text('Submit'),
+                  ),
+                  onSuccess: () {
+                    context.router.back();
+                  },
+                  action: (progress) async {
                     final product = ProductModel(
                       id: '',
                       name: _nameController.text,
@@ -346,10 +358,11 @@ class _AddProductPageState extends State<AddProductPage> {
                       storageInstructions: _specificInstructionsController.text,
                     );
 
-                    await context.read<ProductCubit>().addProduct(product);
-                  }
-                },
-                child: const Text('Submit'),
+                    return await context
+                        .read<ProductCubit>()
+                        .addProduct(product);
+                  },
+                ),
               ),
             ],
           ),
