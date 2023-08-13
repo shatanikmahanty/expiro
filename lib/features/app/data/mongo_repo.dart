@@ -6,6 +6,13 @@ import '../../../configurations/configurations.dart';
 class MongoRepository extends BaseApiRepository {
   Db? mongoClient;
 
+  ///Singleton
+  static final MongoRepository _instance = MongoRepository._internal();
+
+  factory MongoRepository() => _instance;
+
+  MongoRepository._internal();
+
   @override
   Future<void> init() async {
     mongoClient = await Db.create(kMongoUrl);

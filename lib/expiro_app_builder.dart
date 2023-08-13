@@ -7,7 +7,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'configurations/configurations.dart';
-import 'features/app/data/mongo_repo.dart';
 import 'features/app/presentation/builders/app_responsive_layout_builder.dart';
 
 class ExpiroAppBuilder extends AppBuilder {
@@ -22,10 +21,6 @@ class ExpiroAppBuilder extends AppBuilder {
           repositoryProviders: [
             RepositoryProvider<AppLinksRepository>.value(
               value: appLinksRepository,
-            ),
-            RepositoryProvider<MongoRepository>(
-              create: (context) => MongoRepository()..init(),
-              lazy: false,
             ),
           ],
           providers: [

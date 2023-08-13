@@ -25,9 +25,11 @@ dependencies:
   auth0_flutter: ^1.2.1
   auto_route: ^7.8.0
   cached_network_image: ^3.2.3
+  cloud_firestore: ^4.8.4
   djangoflow_app: ^3.2.0
   djangoflow_app_links: ^1.2.0
   expandable_page_view: ^1.0.17
+  firebase_core: ^2.15.0
   flex_color_scheme: ^7.2.0
   flutter:
     sdk: flutter

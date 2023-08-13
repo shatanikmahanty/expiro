@@ -1,5 +1,7 @@
 import 'package:expiro/features/app/presentation/statistics_card.dart';
 import 'package:expiro/features/authentication/authentication.dart';
+import 'package:expiro/features/home/data/blocs/explore_cubit.dart';
+import 'package:expiro/features/home/data/repository/explore_repository.dart';
 import 'package:expiro/features/home/home.dart';
 import 'package:expiro/features/home/presentation/alerts_card.dart';
 import 'package:flutter/material.dart';
@@ -85,34 +87,40 @@ class HomePage extends StatelessWidget {
             const _ContentHeading(
               title: 'Explore',
             ),
-            Container(
-              height: MediaQuery.of(context).size.height * 0.3,
-              padding: const EdgeInsets.symmetric(
-                vertical: kPadding * 2,
-              ),
-              child: ListView(
-                shrinkWrap: true,
-                scrollDirection: Axis.horizontal,
-                children: const [
-                  ExploreCard(
-                    title: 'How to recycle',
-                    subtitle: 'by New York Times',
-                    imageUrl:
-                        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQHJfFJQ8MYypeksy4QQU3kdSvyjZS53E-TdQ&usqp=CAU',
-                  ),
-                  ExploreCard(
-                    title: 'How to recycle',
-                    subtitle: 'by New York Times',
-                    imageUrl:
-                        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQHJfFJQ8MYypeksy4QQU3kdSvyjZS53E-TdQ&usqp=CAU',
-                  ),
-                  ExploreCard(
-                    title: 'How to recycle',
-                    subtitle: 'by New York Times',
-                    imageUrl:
-                        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQHJfFJQ8MYypeksy4QQU3kdSvyjZS53E-TdQ&usqp=CAU',
-                  ),
-                ],
+            RepositoryProvider<ExploreRepository>(
+              create: (context) => ExploreRepository(),
+              child: BlocProvider<ExploreCubit>(
+                create: (context) => ExploreCubit(
+                  context.read<ExploreRepository>(),
+                )..loadBlogs(),
+                child: Builder(
+                    builder: (context) =>
+                        BlocBuilder<ExploreCubit, ExploreState>(
+                          builder: (context, state) => state.isLoading
+                              ? const Center(
+                                  child: CircularProgressIndicator(),
+                                )
+                              : Container(
+                                  height:
+                                      MediaQuery.of(context).size.height * 0.3,
+                                  padding: const EdgeInsets.symmetric(
+                                    vertical: kPadding * 2,
+                                  ),
+                                  child: ListView.builder(
+                                    itemBuilder: (context, index) {
+                                      final blog = state.blogs[index];
+                                      return ExploreCard(
+                                        title: blog.title,
+                                        subtitle: blog.subtitle,
+                                        imageUrl: blog.image,
+                                      );
+                                    },
+                                    shrinkWrap: true,
+                                    scrollDirection: Axis.horizontal,
+                                    itemCount: state.blogs.length,
+                                  ),
+                                ),
+                        )),
               ),
             ),
             const SizedBox(height: kPadding * 2),

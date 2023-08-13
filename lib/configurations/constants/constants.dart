@@ -47,3 +47,4 @@ const productRecyclableOptions = [
 ///Collections
 const kUserCollection = 'users';
 const kProductsCollection = 'products';
+const kExploreCollection = 'explore';
