@@ -1,8 +1,10 @@
 import 'package:expiro/configurations/configurations.dart';
 import 'package:expiro/features/app/app.dart';
+import 'package:expiro/features/app/data/mongo_repo.dart';
 import 'package:expiro/features/authentication/authentication.dart';
 import 'package:expiro/features/authentication/data/repo/social_auth0_repo.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 @RoutePage()
 class LoginProvidersPage extends StatelessWidget {
@@ -56,14 +58,19 @@ class _LoginSheet extends StatelessWidget {
               final credentials = await signInWithAuth0.signIn();
 
               final user = credentials.user;
-              AuthCubit.instance.login(
-                AppUser(
-                  id: credentials.idToken,
-                  name: user.name ?? 'Anonymous User',
-                  email: user.email,
-                  profilePicture: user.pictureUrl.toString(),
-                ),
+              final appUser = AppUser(
+                id: user.sub,
+                name: user.name ?? 'Anonymous User',
+                email: user.email,
+                profilePicture: user.pictureUrl.toString(),
               );
+              AuthCubit.instance.login(
+                appUser,
+              );
+              final data = await context.read<MongoRepository>().createDocument(
+                    kUserCollection,
+                    appUser.toJson(),
+                  );
             },
           ),
           const SizedBox(

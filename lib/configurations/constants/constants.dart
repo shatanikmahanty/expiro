@@ -9,7 +9,8 @@ export 'assets.gen.dart';
 const kAppTitle = 'Expiro';
 const kAppBarTitle = 'exPIRO';
 
-const kApiEndpoint = ''; //TODO add when available
+const kMongoUrl =
+    'mongodb+srv://expiroadmin:expiroadmin@expirocluster.fhifirz.mongodb.net/expiroDatabase?retryWrites=true&w=majority';
 
 const kBrandFontFamily = FontFamily.quando;
 const kFontFamily = FontFamily.roboto;
@@ -42,3 +43,6 @@ const productRecyclableOptions = [
   'Recyclable',
   'Non-Recyclable',
 ];
+
+///Collections
+const kUserCollection = 'users';
