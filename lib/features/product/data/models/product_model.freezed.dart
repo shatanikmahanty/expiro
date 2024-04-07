@@ -23,14 +23,16 @@ mixin _$ProductModel {
   @JsonKey(includeToJson: false)
   String get id => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
-  String get image => throw _privateConstructorUsedError;
+  @JsonKey(includeIfNull: false)
+  String? get image => throw _privateConstructorUsedError;
   int get quantity => throw _privateConstructorUsedError;
-  String get manufactureDate => throw _privateConstructorUsedError;
-  String get expiryDate => throw _privateConstructorUsedError;
-  String get category => throw _privateConstructorUsedError;
-  String get storage => throw _privateConstructorUsedError;
-  String get storageInstructions => throw _privateConstructorUsedError;
-  String get recyclable => throw _privateConstructorUsedError;
+  DateTime get manufactureDate => throw _privateConstructorUsedError;
+  DateTime get expiryDate => throw _privateConstructorUsedError;
+  String? get category => throw _privateConstructorUsedError;
+  String? get location => throw _privateConstructorUsedError;
+  @JsonKey(name: 'storage_instructions')
+  String? get storageInstructions => throw _privateConstructorUsedError;
+  bool? get recyclable => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -47,14 +49,14 @@ abstract class $ProductModelCopyWith<$Res> {
   $Res call(
       {@JsonKey(includeToJson: false) String id,
       String name,
-      String image,
+      @JsonKey(includeIfNull: false) String? image,
       int quantity,
-      String manufactureDate,
-      String expiryDate,
-      String category,
-      String storage,
-      String storageInstructions,
-      String recyclable});
+      DateTime manufactureDate,
+      DateTime expiryDate,
+      String? category,
+      String? location,
+      @JsonKey(name: 'storage_instructions') String? storageInstructions,
+      bool? recyclable});
 }
 
 /// @nodoc
@@ -72,14 +74,14 @@ class _$ProductModelCopyWithImpl<$Res, $Val extends ProductModel>
   $Res call({
     Object? id = null,
     Object? name = null,
-    Object? image = null,
+    Object? image = freezed,
     Object? quantity = null,
     Object? manufactureDate = null,
     Object? expiryDate = null,
-    Object? category = null,
-    Object? storage = null,
-    Object? storageInstructions = null,
-    Object? recyclable = null,
+    Object? category = freezed,
+    Object? location = freezed,
+    Object? storageInstructions = freezed,
+    Object? recyclable = freezed,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -90,10 +92,10 @@ class _$ProductModelCopyWithImpl<$Res, $Val extends ProductModel>
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
-      image: null == image
+      image: freezed == image
           ? _value.image
           : image // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       quantity: null == quantity
           ? _value.quantity
           : quantity // ignore: cast_nullable_to_non_nullable
@@ -101,27 +103,27 @@ class _$ProductModelCopyWithImpl<$Res, $Val extends ProductModel>
       manufactureDate: null == manufactureDate
           ? _value.manufactureDate
           : manufactureDate // ignore: cast_nullable_to_non_nullable
-              as String,
+              as DateTime,
       expiryDate: null == expiryDate
           ? _value.expiryDate
           : expiryDate // ignore: cast_nullable_to_non_nullable
-              as String,
-      category: null == category
+              as DateTime,
+      category: freezed == category
           ? _value.category
           : category // ignore: cast_nullable_to_non_nullable
-              as String,
-      storage: null == storage
-          ? _value.storage
-          : storage // ignore: cast_nullable_to_non_nullable
-              as String,
-      storageInstructions: null == storageInstructions
+              as String?,
+      location: freezed == location
+          ? _value.location
+          : location // ignore: cast_nullable_to_non_nullable
+              as String?,
+      storageInstructions: freezed == storageInstructions
           ? _value.storageInstructions
           : storageInstructions // ignore: cast_nullable_to_non_nullable
-              as String,
-      recyclable: null == recyclable
+              as String?,
+      recyclable: freezed == recyclable
           ? _value.recyclable
           : recyclable // ignore: cast_nullable_to_non_nullable
-              as String,
+              as bool?,
     ) as $Val);
   }
 }
@@ -137,14 +139,14 @@ abstract class _$$_ProductModelCopyWith<$Res>
   $Res call(
       {@JsonKey(includeToJson: false) String id,
       String name,
-      String image,
+      @JsonKey(includeIfNull: false) String? image,
       int quantity,
-      String manufactureDate,
-      String expiryDate,
-      String category,
-      String storage,
-      String storageInstructions,
-      String recyclable});
+      DateTime manufactureDate,
+      DateTime expiryDate,
+      String? category,
+      String? location,
+      @JsonKey(name: 'storage_instructions') String? storageInstructions,
+      bool? recyclable});
 }
 
 /// @nodoc
@@ -160,14 +162,14 @@ class __$$_ProductModelCopyWithImpl<$Res>
   $Res call({
     Object? id = null,
     Object? name = null,
-    Object? image = null,
+    Object? image = freezed,
     Object? quantity = null,
     Object? manufactureDate = null,
     Object? expiryDate = null,
-    Object? category = null,
-    Object? storage = null,
-    Object? storageInstructions = null,
-    Object? recyclable = null,
+    Object? category = freezed,
+    Object? location = freezed,
+    Object? storageInstructions = freezed,
+    Object? recyclable = freezed,
   }) {
     return _then(_$_ProductModel(
       id: null == id
@@ -178,10 +180,10 @@ class __$$_ProductModelCopyWithImpl<$Res>
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
-      image: null == image
+      image: freezed == image
           ? _value.image
           : image // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       quantity: null == quantity
           ? _value.quantity
           : quantity // ignore: cast_nullable_to_non_nullable
@@ -189,27 +191,27 @@ class __$$_ProductModelCopyWithImpl<$Res>
       manufactureDate: null == manufactureDate
           ? _value.manufactureDate
           : manufactureDate // ignore: cast_nullable_to_non_nullable
-              as String,
+              as DateTime,
       expiryDate: null == expiryDate
           ? _value.expiryDate
           : expiryDate // ignore: cast_nullable_to_non_nullable
-              as String,
-      category: null == category
+              as DateTime,
+      category: freezed == category
           ? _value.category
           : category // ignore: cast_nullable_to_non_nullable
-              as String,
-      storage: null == storage
-          ? _value.storage
-          : storage // ignore: cast_nullable_to_non_nullable
-              as String,
-      storageInstructions: null == storageInstructions
+              as String?,
+      location: freezed == location
+          ? _value.location
+          : location // ignore: cast_nullable_to_non_nullable
+              as String?,
+      storageInstructions: freezed == storageInstructions
           ? _value.storageInstructions
           : storageInstructions // ignore: cast_nullable_to_non_nullable
-              as String,
-      recyclable: null == recyclable
+              as String?,
+      recyclable: freezed == recyclable
           ? _value.recyclable
           : recyclable // ignore: cast_nullable_to_non_nullable
-              as String,
+              as bool?,
     ));
   }
 }
@@ -220,13 +222,13 @@ class _$_ProductModel implements _ProductModel {
   const _$_ProductModel(
       {@JsonKey(includeToJson: false) required this.id,
       required this.name,
-      required this.image,
+      @JsonKey(includeIfNull: false) this.image,
       required this.quantity,
       required this.manufactureDate,
       required this.expiryDate,
       required this.category,
-      required this.storage,
-      required this.storageInstructions,
+      required this.location,
+      @JsonKey(name: 'storage_instructions') required this.storageInstructions,
       required this.recyclable});
 
   factory _$_ProductModel.fromJson(Map<String, dynamic> json) =>
@@ -238,25 +240,27 @@ class _$_ProductModel implements _ProductModel {
   @override
   final String name;
   @override
-  final String image;
+  @JsonKey(includeIfNull: false)
+  final String? image;
   @override
   final int quantity;
   @override
-  final String manufactureDate;
+  final DateTime manufactureDate;
   @override
-  final String expiryDate;
+  final DateTime expiryDate;
   @override
-  final String category;
+  final String? category;
   @override
-  final String storage;
+  final String? location;
   @override
-  final String storageInstructions;
+  @JsonKey(name: 'storage_instructions')
+  final String? storageInstructions;
   @override
-  final String recyclable;
+  final bool? recyclable;
 
   @override
   String toString() {
-    return 'ProductModel(id: $id, name: $name, image: $image, quantity: $quantity, manufactureDate: $manufactureDate, expiryDate: $expiryDate, category: $category, storage: $storage, storageInstructions: $storageInstructions, recyclable: $recyclable)';
+    return 'ProductModel(id: $id, name: $name, image: $image, quantity: $quantity, manufactureDate: $manufactureDate, expiryDate: $expiryDate, category: $category, location: $location, storageInstructions: $storageInstructions, recyclable: $recyclable)';
   }
 
   @override
@@ -275,7 +279,8 @@ class _$_ProductModel implements _ProductModel {
                 other.expiryDate == expiryDate) &&
             (identical(other.category, category) ||
                 other.category == category) &&
-            (identical(other.storage, storage) || other.storage == storage) &&
+            (identical(other.location, location) ||
+                other.location == location) &&
             (identical(other.storageInstructions, storageInstructions) ||
                 other.storageInstructions == storageInstructions) &&
             (identical(other.recyclable, recyclable) ||
@@ -293,7 +298,7 @@ class _$_ProductModel implements _ProductModel {
       manufactureDate,
       expiryDate,
       category,
-      storage,
+      location,
       storageInstructions,
       recyclable);
 
@@ -315,14 +320,15 @@ abstract class _ProductModel implements ProductModel {
   const factory _ProductModel(
       {@JsonKey(includeToJson: false) required final String id,
       required final String name,
-      required final String image,
+      @JsonKey(includeIfNull: false) final String? image,
       required final int quantity,
-      required final String manufactureDate,
-      required final String expiryDate,
-      required final String category,
-      required final String storage,
-      required final String storageInstructions,
-      required final String recyclable}) = _$_ProductModel;
+      required final DateTime manufactureDate,
+      required final DateTime expiryDate,
+      required final String? category,
+      required final String? location,
+      @JsonKey(name: 'storage_instructions')
+      required final String? storageInstructions,
+      required final bool? recyclable}) = _$_ProductModel;
 
   factory _ProductModel.fromJson(Map<String, dynamic> json) =
       _$_ProductModel.fromJson;
@@ -333,21 +339,23 @@ abstract class _ProductModel implements ProductModel {
   @override
   String get name;
   @override
-  String get image;
+  @JsonKey(includeIfNull: false)
+  String? get image;
   @override
   int get quantity;
   @override
-  String get manufactureDate;
+  DateTime get manufactureDate;
   @override
-  String get expiryDate;
+  DateTime get expiryDate;
   @override
-  String get category;
+  String? get category;
   @override
-  String get storage;
+  String? get location;
   @override
-  String get storageInstructions;
+  @JsonKey(name: 'storage_instructions')
+  String? get storageInstructions;
   @override
-  String get recyclable;
+  bool? get recyclable;
   @override
   @JsonKey(ignore: true)
   _$$_ProductModelCopyWith<_$_ProductModel> get copyWith =>

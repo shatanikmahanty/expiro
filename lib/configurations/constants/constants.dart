@@ -1,6 +1,7 @@
 // Global APP - specific constants
 
 import 'package:expiro/configurations/constants/fonts.gen.dart';
+import 'package:flutter/material.dart';
 
 ///Generate by running ```fluttergen``` in the terminal
 export 'assets.gen.dart';
@@ -8,10 +9,6 @@ export 'assets.gen.dart';
 
 const kAppTitle = 'Expiro';
 const kAppBarTitle = 'exPIRO';
-
-const kMongoUrl =
-    'mongodb+srv://expiroadmin:expiroadmin@expirocluster.fhifirz.mongodb.net/expiroDatabase?retryWrites=true&w=majority';
-
 const kBrandFontFamily = FontFamily.quando;
 const kFontFamily = FontFamily.roboto;
 
@@ -28,6 +25,17 @@ const productCategoryList = [
   'Meats',
   'Drinks',
   'Other',
+];
+
+const productCategoryIconList = [
+  Icons.shopping_bag_outlined,
+  Icons.medical_services_outlined,
+  Icons.local_dining_outlined,
+  Icons.face_outlined,
+  Icons.eco_outlined,
+  Icons.fastfood_outlined,
+  Icons.local_drink_outlined,
+  Icons.more_horiz_outlined,
 ];
 
 const productStorageList = [

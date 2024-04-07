@@ -11,7 +11,7 @@ class AppHomePage extends StatelessWidget with AutoRouteWrapper {
     Key? key,
   }) : super(key: key);
 
-  final GlobalKey expandableKey = GlobalKey<ExpandableFabState>();
+  final expandableKey = GlobalKey<ExpandableFabState>();
 
   @override
   Widget build(BuildContext context) {
@@ -28,8 +28,7 @@ class AppHomePage extends StatelessWidget with AutoRouteWrapper {
         const end = Offset.zero;
         const curve = Curves.fastOutSlowIn;
 
-        if ((context.tabsRouter.previousIndex ?? 0) <
-            context.tabsRouter.activeIndex) {
+        if ((context.tabsRouter.previousIndex ?? 0) < context.tabsRouter.activeIndex) {
           return SlideTransition(
             position: animation.drive(
               Tween(begin: begin, end: end).chain(
@@ -60,6 +59,7 @@ class AppHomePage extends StatelessWidget with AutoRouteWrapper {
       floatingActionButtonLocation: ExpandableFab.location,
       floatingActionButtonBuilder: (context, router) => router.activeIndex == 0
           ? ExpandableFab(
+              key: expandableKey,
               openButtonBuilder: RotateFloatingActionButtonBuilder(
                 child: const Icon(Icons.add),
                 fabSize: ExpandableFabSize.regular,
@@ -84,6 +84,7 @@ class AppHomePage extends StatelessWidget with AutoRouteWrapper {
                   heroTag: null,
                   tooltip: 'Add Manually',
                   onPressed: () {
+                    expandableKey.currentState?.toggle();
                     context.router.push(const ProductRouter());
                   },
                   child: const Icon(Icons.edit),
@@ -92,6 +93,7 @@ class AppHomePage extends StatelessWidget with AutoRouteWrapper {
                   heroTag: null,
                   tooltip: 'Scan QR Code',
                   onPressed: () async {
+                    expandableKey.currentState?.toggle();
                     final result = await BarcodeScanner.scan();
                     print('result -------------------> ${result.rawContent}');
                   },
@@ -102,7 +104,9 @@ class AppHomePage extends StatelessWidget with AutoRouteWrapper {
                 FloatingActionButton(
                   heroTag: null,
                   tooltip: 'Add Image',
-                  onPressed: () {},
+                  onPressed: () {
+                    expandableKey.currentState?.toggle();
+                  },
                   child: const Icon(
                     Icons.image,
                   ),

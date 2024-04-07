@@ -41,11 +41,7 @@ class HomePage extends StatelessWidget {
                   Expanded(
                     child: StatisticsCard(
                       title: 'Expiring Soon',
-                      data: context
-                          .read<ProductCubit>()
-                          .getSoonToExpireProducts()
-                          .length
-                          .toString(),
+                      data: context.read<ProductCubit>().getSoonToExpireProducts().length.toString(),
                       color: const Color(0xffE46962),
                       textColor: Colors.white,
                     ),
@@ -54,22 +50,14 @@ class HomePage extends StatelessWidget {
                   Expanded(
                     child: StatisticsCard(
                       title: 'Good to Use',
-                      data: context
-                          .read<ProductCubit>()
-                          .getGoodToUseProducts()
-                          .length
-                          .toString(),
+                      data: context.read<ProductCubit>().getGoodToUseProducts().length.toString(),
                     ),
                   ),
                   const SizedBox(width: kPadding / 2),
                   Expanded(
                     child: StatisticsCard(
                       title: 'Expired',
-                      data: context
-                          .read<ProductCubit>()
-                          .getExpiredProducts()
-                          .length
-                          .toString(),
+                      data: context.read<ProductCubit>().getExpiredProducts().length.toString(),
                     ),
                   ),
                 ],
@@ -91,15 +79,13 @@ class HomePage extends StatelessWidget {
                     product: 'Fanta',
                     alertIcon: Icons.info,
                     alertType: 'Expiring Soon',
-                    productUrl:
-                        'https://assets.stickpng.com/images/580b57fbd9996e24bc43c10f.png',
+                    productUrl: 'https://assets.stickpng.com/images/580b57fbd9996e24bc43c10f.png',
                   ),
                   AlertsCard(
                     product: 'Fanta',
                     alertIcon: Icons.info,
                     alertType: 'Expiring Soon',
-                    productUrl:
-                        'https://assets.stickpng.com/images/580b57fbd9996e24bc43c10f.png',
+                    productUrl: 'https://assets.stickpng.com/images/580b57fbd9996e24bc43c10f.png',
                   ),
                 ],
               ),
@@ -114,15 +100,13 @@ class HomePage extends StatelessWidget {
                   context.read<ExploreRepository>(),
                 )..loadBlogs(),
                 child: Builder(
-                    builder: (context) =>
-                        BlocBuilder<ExploreCubit, ExploreState>(
+                    builder: (context) => BlocBuilder<ExploreCubit, ExploreState>(
                           builder: (context, state) => state.isLoading
                               ? const Center(
                                   child: CircularProgressIndicator(),
                                 )
                               : Container(
-                                  height:
-                                      MediaQuery.of(context).size.height * 0.3,
+                                  height: MediaQuery.of(context).size.height * 0.3,
                                   padding: const EdgeInsets.symmetric(
                                     vertical: kPadding * 2,
                                   ),
@@ -136,8 +120,7 @@ class HomePage extends StatelessWidget {
                                         onTap: () {
                                           launchUrlString(
                                             blog.launchUrl,
-                                            mode:
-                                                LaunchMode.externalApplication,
+                                            mode: LaunchMode.externalApplication,
                                           );
                                         },
                                       );
@@ -151,12 +134,6 @@ class HomePage extends StatelessWidget {
               ),
             ),
             const SizedBox(height: kPadding * 2),
-            OutlinedButton(
-              onPressed: () {
-                AuthCubit.instance.logout();
-              },
-              child: const Text('Log Out'),
-            ),
           ],
         ),
       ),

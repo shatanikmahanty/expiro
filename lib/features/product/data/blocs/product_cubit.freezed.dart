@@ -21,7 +21,9 @@ ProductState _$ProductStateFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$ProductState {
   List<ProductModel> get products => throw _privateConstructorUsedError;
+  List<ProductModel> get filteredProducts => throw _privateConstructorUsedError;
   bool get isLoading => throw _privateConstructorUsedError;
+  String? get selectedCategory => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -35,7 +37,11 @@ abstract class $ProductStateCopyWith<$Res> {
           ProductState value, $Res Function(ProductState) then) =
       _$ProductStateCopyWithImpl<$Res, ProductState>;
   @useResult
-  $Res call({List<ProductModel> products, bool isLoading});
+  $Res call(
+      {List<ProductModel> products,
+      List<ProductModel> filteredProducts,
+      bool isLoading,
+      String? selectedCategory});
 }
 
 /// @nodoc
@@ -52,17 +58,27 @@ class _$ProductStateCopyWithImpl<$Res, $Val extends ProductState>
   @override
   $Res call({
     Object? products = null,
+    Object? filteredProducts = null,
     Object? isLoading = null,
+    Object? selectedCategory = freezed,
   }) {
     return _then(_value.copyWith(
       products: null == products
           ? _value.products
           : products // ignore: cast_nullable_to_non_nullable
               as List<ProductModel>,
+      filteredProducts: null == filteredProducts
+          ? _value.filteredProducts
+          : filteredProducts // ignore: cast_nullable_to_non_nullable
+              as List<ProductModel>,
       isLoading: null == isLoading
           ? _value.isLoading
           : isLoading // ignore: cast_nullable_to_non_nullable
               as bool,
+      selectedCategory: freezed == selectedCategory
+          ? _value.selectedCategory
+          : selectedCategory // ignore: cast_nullable_to_non_nullable
+              as String?,
     ) as $Val);
   }
 }
@@ -75,7 +91,11 @@ abstract class _$$_ProductStateCopyWith<$Res>
       __$$_ProductStateCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({List<ProductModel> products, bool isLoading});
+  $Res call(
+      {List<ProductModel> products,
+      List<ProductModel> filteredProducts,
+      bool isLoading,
+      String? selectedCategory});
 }
 
 /// @nodoc
@@ -90,17 +110,27 @@ class __$$_ProductStateCopyWithImpl<$Res>
   @override
   $Res call({
     Object? products = null,
+    Object? filteredProducts = null,
     Object? isLoading = null,
+    Object? selectedCategory = freezed,
   }) {
     return _then(_$_ProductState(
       products: null == products
           ? _value._products
           : products // ignore: cast_nullable_to_non_nullable
               as List<ProductModel>,
+      filteredProducts: null == filteredProducts
+          ? _value._filteredProducts
+          : filteredProducts // ignore: cast_nullable_to_non_nullable
+              as List<ProductModel>,
       isLoading: null == isLoading
           ? _value.isLoading
           : isLoading // ignore: cast_nullable_to_non_nullable
               as bool,
+      selectedCategory: freezed == selectedCategory
+          ? _value.selectedCategory
+          : selectedCategory // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -109,8 +139,12 @@ class __$$_ProductStateCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_ProductState implements _ProductState {
   const _$_ProductState(
-      {final List<ProductModel> products = const [], this.isLoading = false})
-      : _products = products;
+      {final List<ProductModel> products = const [],
+      final List<ProductModel> filteredProducts = const [],
+      this.isLoading = false,
+      this.selectedCategory = null})
+      : _products = products,
+        _filteredProducts = filteredProducts;
 
   factory _$_ProductState.fromJson(Map<String, dynamic> json) =>
       _$$_ProductStateFromJson(json);
@@ -124,13 +158,26 @@ class _$_ProductState implements _ProductState {
     return EqualUnmodifiableListView(_products);
   }
 
+  final List<ProductModel> _filteredProducts;
+  @override
+  @JsonKey()
+  List<ProductModel> get filteredProducts {
+    if (_filteredProducts is EqualUnmodifiableListView)
+      return _filteredProducts;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_filteredProducts);
+  }
+
   @override
   @JsonKey()
   final bool isLoading;
+  @override
+  @JsonKey()
+  final String? selectedCategory;
 
   @override
   String toString() {
-    return 'ProductState(products: $products, isLoading: $isLoading)';
+    return 'ProductState(products: $products, filteredProducts: $filteredProducts, isLoading: $isLoading, selectedCategory: $selectedCategory)';
   }
 
   @override
@@ -139,14 +186,22 @@ class _$_ProductState implements _ProductState {
         (other.runtimeType == runtimeType &&
             other is _$_ProductState &&
             const DeepCollectionEquality().equals(other._products, _products) &&
+            const DeepCollectionEquality()
+                .equals(other._filteredProducts, _filteredProducts) &&
             (identical(other.isLoading, isLoading) ||
-                other.isLoading == isLoading));
+                other.isLoading == isLoading) &&
+            (identical(other.selectedCategory, selectedCategory) ||
+                other.selectedCategory == selectedCategory));
   }
 
   @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(
-      runtimeType, const DeepCollectionEquality().hash(_products), isLoading);
+      runtimeType,
+      const DeepCollectionEquality().hash(_products),
+      const DeepCollectionEquality().hash(_filteredProducts),
+      isLoading,
+      selectedCategory);
 
   @JsonKey(ignore: true)
   @override
@@ -165,7 +220,9 @@ class _$_ProductState implements _ProductState {
 abstract class _ProductState implements ProductState {
   const factory _ProductState(
       {final List<ProductModel> products,
-      final bool isLoading}) = _$_ProductState;
+      final List<ProductModel> filteredProducts,
+      final bool isLoading,
+      final String? selectedCategory}) = _$_ProductState;
 
   factory _ProductState.fromJson(Map<String, dynamic> json) =
       _$_ProductState.fromJson;
@@ -173,7 +230,11 @@ abstract class _ProductState implements ProductState {
   @override
   List<ProductModel> get products;
   @override
+  List<ProductModel> get filteredProducts;
+  @override
   bool get isLoading;
+  @override
+  String? get selectedCategory;
   @override
   @JsonKey(ignore: true)
   _$$_ProductStateCopyWith<_$_ProductState> get copyWith =>

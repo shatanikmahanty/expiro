@@ -11,16 +11,23 @@ class ProductModel with _$ProductModel {
     )
     required String id,
     required String name,
-    required String image,
+    @JsonKey(includeIfNull: false) String? image,
     required int quantity,
-    required String manufactureDate,
-    required String expiryDate,
-    required String category,
-    required String storage,
-    required String storageInstructions,
-    required String recyclable,
+    required DateTime manufactureDate,
+    required DateTime expiryDate,
+    required String? category,
+    required String? location,
+    @JsonKey(name: 'storage_instructions') required String? storageInstructions,
+    required bool? recyclable,
   }) = _ProductModel;
 
-  factory ProductModel.fromJson(Map<String, dynamic> json) =>
-      _$ProductModelFromJson(json);
+  factory ProductModel.fromJson(Map<String, dynamic> json) => _$ProductModelFromJson(json);
+}
+
+extension ProductModelX on ProductModel {
+  String? get isRecyclableStr => recyclable == null
+      ? null
+      : recyclable!
+          ? 'Recyclable'
+          : 'Non Recyclable';
 }
