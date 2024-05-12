@@ -1,6 +1,14 @@
+import 'dart:io';
+
 import 'package:expiro/configurations/configurations.dart';
 import 'package:expiro/features/app/app.dart';
+import 'package:expiro/features/app/presentation/app_image_picker.dart';
+import 'package:expiro/features/product/data/models/product_model.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:progress_builder/progress_builder.dart';
+
+import '../../data/blocs/product_cubit.dart';
 
 @RoutePage()
 class AddProductPage extends StatefulWidget {
@@ -11,33 +19,56 @@ class AddProductPage extends StatefulWidget {
 }
 
 class _AddProductPageState extends State<AddProductPage> {
-  DateTime? _manufacturedDate;
-  DateTime? _expiryDate;
+  ProductModel product = ProductModel(
+    id: '',
+    name: '',
+    quantity: 1,
+    manufactureDate: DateTime.now(),
+    expiryDate: DateTime.now(),
+    category: null,
+    location: null,
+    storageInstructions: null,
+    recyclable: null,
+  );
+
+  String? _pickedImagePath;
+
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _quantityController = TextEditingController(
+    text: '1',
+  );
+  final TextEditingController _specificInstructionsController = TextEditingController();
+  final TextEditingController _manufacturedDateController = TextEditingController();
+  final TextEditingController _expiryDateController = TextEditingController();
 
   Future<void> _selectManufacturedDate(BuildContext context) async {
+    final currentManufacturedDate = product.manufactureDate;
     final DateTime? picked = await showDatePicker(
       context: context,
-      initialDate: _manufacturedDate ?? DateTime.now(),
+      initialDate: currentManufacturedDate,
       firstDate: DateTime(2000),
       lastDate: DateTime(2101),
     );
-    if (picked != null && picked != _manufacturedDate) {
+    if (picked != null && picked != currentManufacturedDate) {
       setState(() {
-        _manufacturedDate = picked;
+        product = product.copyWith(manufactureDate: picked);
+        _manufacturedDateController.text = '${product.manufactureDate.toLocal()}'.split(' ')[0];
       });
     }
   }
 
   Future<void> _selectExpiryDate(BuildContext context) async {
+    final currentExpiryDate = product.expiryDate;
     final DateTime? picked = await showDatePicker(
       context: context,
-      initialDate: _expiryDate ?? DateTime.now(),
+      initialDate: currentExpiryDate,
       firstDate: DateTime(2000),
       lastDate: DateTime(2101),
     );
-    if (picked != null && picked != _expiryDate) {
+    if (picked != null && picked != currentExpiryDate) {
       setState(() {
-        _expiryDate = picked;
+        product = product.copyWith(expiryDate: picked);
+        _expiryDateController.text = '${product.expiryDate.toLocal()}'.split(' ')[0];
       });
     }
   }
@@ -56,55 +87,102 @@ class _AddProductPageState extends State<AddProductPage> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Card(
-                elevation: 4,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16),
+                  side: const BorderSide(
+                    color: Colors.black,
+                    width: 2,
+                  ),
+                ),
                 child: Column(
                   children: [
-                    Container(
-                      height: 200,
-                      color: Colors.grey, // Placeholder for product image
+                    AppImagePicker(
+                      widgetBuilder: (path) {
+                        if (path == null) {
+                          return SizedBox(
+                            height: 200,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  Icons.add_a_photo_outlined,
+                                  size: kPadding * 6,
+                                  color: theme.primaryColor,
+                                ),
+                                const SizedBox(width: kPadding * 2),
+                                Text(
+                                  'Add photo',
+                                  style: theme.textTheme.headlineSmall?.copyWith(
+                                    color: theme.primaryColor,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          );
+                        } else {
+                          return Image.file(
+                            File(path),
+                            fit: BoxFit.cover,
+                            height: 200,
+                            width: double.infinity,
+                          );
+                        }
+                      },
+                      onImageChanged: (String? path) {
+                        _pickedImagePath = path;
+                      },
                     ),
                     Padding(
                       padding: const EdgeInsets.all(16.0),
                       child: Column(
                         children: [
-                          const TextField(
-                            decoration: InputDecoration(labelText: 'Name'),
-                          ),
-                          const SizedBox(height: 12),
-                          const TextField(
-                            decoration: InputDecoration(labelText: 'Quantity'),
-                          ),
-                          const SizedBox(height: 12),
-                          GestureDetector(
-                            onTap: () => _selectManufacturedDate(context),
-                            child: TextFormField(
-                              decoration: const InputDecoration(
-                                labelText: 'Manufactured Date',
-                                suffixIcon: Icon(Icons.calendar_today),
+                          TextField(
+                            controller: _nameController,
+                            decoration: const InputDecoration(
+                              labelText: 'Name',
+                              labelStyle: TextStyle(
+                                color: Colors.grey,
                               ),
-                              enabled: false,
-                              initialValue: _manufacturedDate != null
-                                  ? '${_manufacturedDate?.toLocal()}'
-                                      .split(' ')[0]
-                                  : '',
                             ),
                           ),
                           const SizedBox(height: 12),
-                          GestureDetector(
-                            onTap: () => _selectExpiryDate(context),
-                            child: TextFormField(
-                              decoration: const InputDecoration(
-                                labelText: 'Expiry Date',
-                                suffixIcon: Icon(Icons.calendar_today),
+                          TextField(
+                            keyboardType: TextInputType.number,
+                            controller: _quantityController,
+                            decoration: const InputDecoration(
+                              labelText: 'Quantity',
+                              labelStyle: TextStyle(
+                                color: Colors.grey,
                               ),
-                              enabled: false,
-                              initialValue: _expiryDate != null
-                                  ? '${_expiryDate?.toLocal()}'.split(' ')[0]
-                                  : '',
                             ),
                           ),
                           const SizedBox(height: 12),
-                          // Repeat RadioListTile for other categories
+                          TextFormField(
+                            controller: _manufacturedDateController,
+                            decoration: InputDecoration(
+                              labelText: 'Manufactured Date',
+                              suffixIcon: GestureDetector(
+                                onTap: () => _selectManufacturedDate(context),
+                                child: const Icon(Icons.calendar_today),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 12),
+                          TextFormField(
+                            controller: _expiryDateController,
+                            decoration: InputDecoration(
+                              labelText: 'Expiry Date',
+                              suffixIcon: GestureDetector(
+                                onTap: () => _selectExpiryDate(context),
+                                child: const Icon(Icons.calendar_today),
+                              ),
+                            ),
+                            inputFormatters: [
+                              //create DateInputFormatter(),
+                            ],
+                          ),
+                          const SizedBox(height: 12),
                         ],
                       ),
                     ),
@@ -113,27 +191,22 @@ class _AddProductPageState extends State<AddProductPage> {
               ),
               const SizedBox(height: 20),
               Card(
-                elevation: 4,
+                color: const Color(0xffF3F6FF),
+                surfaceTintColor: theme.colorScheme.primary.withOpacity(0.2),
                 child: Container(
-                  height: kPadding * 36,
+                  height: kPadding * 38,
                   padding: const EdgeInsets.all(
                     kPadding * 3,
                   ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        'Select product category',
-                        style: theme.textTheme.titleSmall?.copyWith(
-                          color: theme.primaryColor,
-                        ),
-                      ),
+                      const _HeaderText(headerText: 'Select product category'),
                       Expanded(
                         child: GridView.builder(
                           physics: const NeverScrollableScrollPhysics(),
                           shrinkWrap: true,
-                          gridDelegate:
-                              const SliverGridDelegateWithFixedCrossAxisCount(
+                          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: 2,
                             childAspectRatio: 3,
                           ),
@@ -141,10 +214,16 @@ class _AddProductPageState extends State<AddProductPage> {
                             contentPadding: EdgeInsets.zero,
                             title: Text(productCategoryList[index]),
                             value: productCategoryList[index],
-                            groupValue: null,
+                            groupValue: product.category,
                             // Add your group value here
                             onChanged: (value) {
-                              // Handle selection
+                              if (value == null) {
+                                return;
+                              }
+                              product = product.copyWith(
+                                category: value,
+                              );
+                              setState(() {});
                             },
                           ),
                           itemCount: productCategoryList.length,
@@ -157,7 +236,8 @@ class _AddProductPageState extends State<AddProductPage> {
               ),
               const SizedBox(height: 20),
               Card(
-                elevation: 4,
+                color: const Color(0xffF3F6FF),
+                surfaceTintColor: theme.colorScheme.primary.withOpacity(0.2),
                 child: Container(
                   height: kPadding * 42,
                   padding: const EdgeInsets.all(
@@ -166,18 +246,14 @@ class _AddProductPageState extends State<AddProductPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        'Where do you want to store the product?',
-                        style: theme.textTheme.titleSmall?.copyWith(
-                          color: theme.primaryColor,
-                        ),
+                      const _HeaderText(
+                        headerText: 'Choose storage location',
                       ),
                       Expanded(
                         child: GridView.builder(
                           physics: const NeverScrollableScrollPhysics(),
                           shrinkWrap: true,
-                          gridDelegate:
-                              const SliverGridDelegateWithFixedCrossAxisCount(
+                          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: 2,
                             childAspectRatio: 3.2,
                           ),
@@ -185,19 +261,31 @@ class _AddProductPageState extends State<AddProductPage> {
                             contentPadding: EdgeInsets.zero,
                             title: Text(productStorageList[index]),
                             value: productStorageList[index],
-                            groupValue: null,
+                            groupValue: product.location,
                             // Add your group value here
                             onChanged: (value) {
-                              // Handle selection
+                              if (value == null) {
+                                return;
+                              }
+                              product = product.copyWith(
+                                location: value,
+                              );
+                              setState(() {});
                             },
                           ),
                           itemCount: productStorageList.length,
                         ),
                       ),
-                      const SizedBox(height: 12),
-                      const TextField(
-                        decoration: InputDecoration(
+                      const SizedBox(
+                        height: kPadding * 1.5,
+                      ),
+                      TextField(
+                        controller: _specificInstructionsController,
+                        decoration: const InputDecoration(
                           labelText: 'Add specific instructions',
+                          labelStyle: TextStyle(
+                            color: Colors.grey,
+                          ),
                         ),
                       ),
                     ],
@@ -206,6 +294,8 @@ class _AddProductPageState extends State<AddProductPage> {
               ),
               const SizedBox(height: 20),
               Card(
+                color: const Color(0xffF3F6FF),
+                surfaceTintColor: theme.colorScheme.primary.withOpacity(0.2),
                 elevation: 4,
                 child: Padding(
                   padding: const EdgeInsets.all(
@@ -214,31 +304,33 @@ class _AddProductPageState extends State<AddProductPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        'Is this product recyclable or non-recyclable?',
-                        style: theme.textTheme.titleSmall?.copyWith(
-                          color: theme.primaryColor,
-                        ),
-                      ),
+                      const _HeaderText(headerText: 'Recyclable status'),
                       Column(children: [
                         RadioListTile(
                           contentPadding: EdgeInsets.zero,
                           title: const Text('♻️  Recyclable'),
                           value: 'Recyclable',
-                          groupValue: null,
+                          groupValue: product.isRecyclableStr,
                           // Add your group value here
                           onChanged: (value) {
-                            // Handle selection
+                            bool isRecyclable = value == 'Recyclable';
+                            product = product.copyWith(
+                              recyclable: isRecyclable,
+                            );
+                            setState(() {});
                           },
                         ),
                         RadioListTile(
                           contentPadding: EdgeInsets.zero,
                           title: const Text('⭕  Non Recyclable'),
                           value: 'Non Recyclable',
-                          groupValue: null,
-                          // Add your group value here
+                          groupValue: product.isRecyclableStr,
                           onChanged: (value) {
-                            // Handle selection
+                            bool isRecyclable = value == 'Recyclable';
+                            product = product.copyWith(
+                              recyclable: isRecyclable,
+                            );
+                            setState(() {});
                           },
                         ),
                       ]),
@@ -247,14 +339,105 @@ class _AddProductPageState extends State<AddProductPage> {
                 ),
               ),
               const SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: () {
-                  // Handle submission
-                },
-                child: const Text('Submit'),
+              Center(
+                child: CircularProgressBuilder(
+                  builder: (context, action, error) => ElevatedButton(
+                    onPressed: () async {
+                      if (_nameController.text.isEmpty) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('Please fill name'),
+                          ),
+                        );
+                        return;
+                      } else if (_quantityController.text.isEmpty || int.tryParse(_quantityController.text) == null) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('Please fill quantity properly'),
+                          ),
+                        );
+                        return;
+                      } else if (_expiryDateController.text.isEmpty || _manufacturedDateController.text.isEmpty) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('Please select a date'),
+                          ),
+                        );
+                        return;
+                      } else if (product.category == null) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('Please select a category'),
+                          ),
+                        );
+                        return;
+                      } else if (product.location == null) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('Please select a storage option'),
+                          ),
+                        );
+                        return;
+                      } else if (product.recyclable == null) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('Please select a recyclable option'),
+                          ),
+                        );
+                        return;
+                      } else {
+                        action?.call();
+                      }
+                    },
+                    child: const Text('Submit'),
+                  ),
+                  onSuccess: () {
+                    context.router.back();
+                  },
+                  action: (progress) async {
+                    final productCubit = context.read<ProductCubit>();
+                    if (_pickedImagePath != null) {
+                      final imageUrl = await productCubit.uploadImage(_pickedImagePath!);
+                      product = product.copyWith(image: imageUrl);
+                    }
+
+                    final productRes = product.copyWith(
+                      id: '',
+                      name: _nameController.text,
+                      quantity: int.tryParse(_quantityController.text) ?? 1,
+                      location: product.location,
+                      storageInstructions: _specificInstructionsController.text,
+                    );
+
+                    return await productCubit.addProduct(productRes);
+                  },
+                ),
               ),
             ],
           ),
+        ),
+      ),
+    );
+  }
+}
+
+class _HeaderText extends StatelessWidget {
+  const _HeaderText({required this.headerText});
+
+  final String headerText;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Text(
+        headerText,
+        style: theme.textTheme.titleMedium?.copyWith(
+          color: theme.primaryColor,
+          fontWeight: FontWeight.bold,
+          fontSize: 18,
         ),
       ),
     );

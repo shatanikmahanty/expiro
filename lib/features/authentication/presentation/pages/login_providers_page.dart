@@ -56,13 +56,14 @@ class _LoginSheet extends StatelessWidget {
               final credentials = await signInWithAuth0.signIn();
 
               final user = credentials.user;
+              final appUser = AppUser(
+                id: user.sub,
+                name: user.name ?? 'Anonymous User',
+                email: user.email,
+                profilePicture: user.pictureUrl.toString(),
+              );
               AuthCubit.instance.login(
-                AppUser(
-                  id: credentials.idToken,
-                  name: user.name ?? 'Anonymous User',
-                  email: user.email,
-                  profilePicture: user.pictureUrl.toString(),
-                ),
+                appUser,
               );
             },
           ),

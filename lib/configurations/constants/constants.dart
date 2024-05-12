@@ -1,6 +1,7 @@
 // Global APP - specific constants
 
 import 'package:expiro/configurations/constants/fonts.gen.dart';
+import 'package:flutter/material.dart';
 
 ///Generate by running ```fluttergen``` in the terminal
 export 'assets.gen.dart';
@@ -8,9 +9,6 @@ export 'assets.gen.dart';
 
 const kAppTitle = 'Expiro';
 const kAppBarTitle = 'exPIRO';
-
-const kApiEndpoint = ''; //TODO add when available
-
 const kBrandFontFamily = FontFamily.quando;
 const kFontFamily = FontFamily.roboto;
 
@@ -29,6 +27,17 @@ const productCategoryList = [
   'Other',
 ];
 
+const productCategoryIconList = [
+  Icons.shopping_bag_outlined,
+  Icons.medical_services_outlined,
+  Icons.local_dining_outlined,
+  Icons.face_outlined,
+  Icons.eco_outlined,
+  Icons.fastfood_outlined,
+  Icons.local_drink_outlined,
+  Icons.more_horiz_outlined,
+];
+
 const productStorageList = [
   'Bedroom',
   'Storage Room',
@@ -42,3 +51,8 @@ const productRecyclableOptions = [
   'Recyclable',
   'Non-Recyclable',
 ];
+
+///Collections
+const kUserCollection = 'users';
+const kProductsCollection = 'products';
+const kExploreCollection = 'explore';

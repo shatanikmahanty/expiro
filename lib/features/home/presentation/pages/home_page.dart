@@ -1,9 +1,14 @@
 import 'package:expiro/features/app/presentation/statistics_card.dart';
 import 'package:expiro/features/authentication/authentication.dart';
+import 'package:expiro/features/home/data/blocs/explore_cubit.dart';
+import 'package:expiro/features/home/data/repository/explore_repository.dart';
 import 'package:expiro/features/home/home.dart';
 import 'package:expiro/features/home/presentation/alerts_card.dart';
+import 'package:expiro/features/product/data/blocs/product_cubit.dart';
+import 'package:expiro/features/product/data/models/product_alerts_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 import '../../../../configurations/configurations.dart';
 
@@ -28,100 +33,138 @@ class HomePage extends StatelessWidget {
               ),
             ),
             const SizedBox(height: kPadding * 2),
-            const Padding(
-              padding: EdgeInsets.symmetric(
-                vertical: kPadding * 2,
-              ),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: StatisticsCard(
-                      title: 'Expiring Soon',
-                      data: '2',
-                      color: Color(0xffE46962),
-                      textColor: Colors.white,
+            BlocBuilder<ProductCubit, ProductState>(
+              buildWhen: (previous, current) => previous.products.length != current.products.length,
+              builder: (context, state) => Padding(
+                padding: const EdgeInsets.symmetric(
+                  vertical: kPadding * 2,
+                ),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: StatisticsCard(
+                        title: 'Expiring Soon',
+                        data: context.read<ProductCubit>().getSoonToExpireProducts().length.toString(),
+                        color: const Color(0xffFFC107),
+                        textColor: Colors.white,
+                      ),
                     ),
-                  ),
-                  SizedBox(width: kPadding / 2),
-                  Expanded(
-                    child: StatisticsCard(title: 'Good to Use', data: '5'),
-                  ),
-                  SizedBox(width: kPadding / 2),
-                  Expanded(
-                    child: StatisticsCard(title: 'Expired', data: '2'),
-                  ),
-                ],
+                    const SizedBox(width: kPadding / 2),
+                    Expanded(
+                      child: StatisticsCard(
+                        title: 'Good to Use',
+                        color: const Color(0xff4D9F6C),
+                        textColor: Colors.white,
+                        data: context.read<ProductCubit>().getGoodToUseProducts().length.toString(),
+                      ),
+                    ),
+                    const SizedBox(width: kPadding / 2),
+                    Expanded(
+                      child: StatisticsCard(
+                        title: 'Expired',
+                        color: const Color(0xffE46962),
+                        textColor: Colors.white,
+                        data: context.read<ProductCubit>().getExpiredProducts().length.toString(),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
             const _ContentHeading(
               title: 'Alerts',
             ),
-            Container(
-              height: MediaQuery.of(context).size.height * 0.15,
-              padding: const EdgeInsets.symmetric(
-                vertical: kPadding * 2,
-              ),
-              child: ListView(
-                shrinkWrap: true,
-                scrollDirection: Axis.horizontal,
-                children: const [
-                  AlertsCard(
-                    product: 'Fanta',
-                    alertIcon: Icons.info,
-                    alertType: 'Expiring Soon',
-                    productUrl:
-                        'https://assets.stickpng.com/images/580b57fbd9996e24bc43c10f.png',
+            BlocBuilder<ProductCubit, ProductState>(
+              builder: (context, state) {
+                if (state.productAlerts.isEmpty) {
+                  return SizedBox(
+                    width: double.infinity,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.check_circle,
+                          color: theme.primaryColor,
+                        ),
+                        const SizedBox(height: kPadding),
+                        Text(
+                          'No alerts found',
+                          style: theme.textTheme.bodyMedium?.copyWith(
+                            color: theme.primaryColor,
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                }
+
+                return Container(
+                  height: MediaQuery.of(context).size.height * 0.15,
+                  padding: const EdgeInsets.symmetric(
+                    vertical: kPadding * 2,
                   ),
-                  AlertsCard(
-                    product: 'Fanta',
-                    alertIcon: Icons.info,
-                    alertType: 'Expiring Soon',
-                    productUrl:
-                        'https://assets.stickpng.com/images/580b57fbd9996e24bc43c10f.png',
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    scrollDirection: Axis.horizontal,
+                    itemCount: state.productAlerts.length,
+                    itemBuilder: (context, index) {
+                      final alert = state.productAlerts[index];
+                      return AlertsCard(
+                        alertType: alert.alertType.value,
+                        alertIcon: alert.alertIcon,
+                        product: alert.name,
+                        alertIconColor: alert.alertIconColor,
+                        productUrl: alert.image ?? '',
+                      );
+                    },
                   ),
-                ],
-              ),
+                );
+              },
             ),
             const _ContentHeading(
               title: 'Explore',
             ),
-            Container(
-              height: MediaQuery.of(context).size.height * 0.3,
-              padding: const EdgeInsets.symmetric(
-                vertical: kPadding * 2,
-              ),
-              child: ListView(
-                shrinkWrap: true,
-                scrollDirection: Axis.horizontal,
-                children: const [
-                  ExploreCard(
-                    title: 'How to recycle',
-                    subtitle: 'by New York Times',
-                    imageUrl:
-                        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQHJfFJQ8MYypeksy4QQU3kdSvyjZS53E-TdQ&usqp=CAU',
-                  ),
-                  ExploreCard(
-                    title: 'How to recycle',
-                    subtitle: 'by New York Times',
-                    imageUrl:
-                        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQHJfFJQ8MYypeksy4QQU3kdSvyjZS53E-TdQ&usqp=CAU',
-                  ),
-                  ExploreCard(
-                    title: 'How to recycle',
-                    subtitle: 'by New York Times',
-                    imageUrl:
-                        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQHJfFJQ8MYypeksy4QQU3kdSvyjZS53E-TdQ&usqp=CAU',
-                  ),
-                ],
+            RepositoryProvider<ExploreRepository>(
+              create: (context) => ExploreRepository(),
+              child: BlocProvider<ExploreCubit>(
+                create: (context) => ExploreCubit(
+                  context.read<ExploreRepository>(),
+                )..loadBlogs(),
+                child: Builder(
+                    builder: (context) => BlocBuilder<ExploreCubit, ExploreState>(
+                          builder: (context, state) => state.isLoading
+                              ? const Center(
+                                  child: CircularProgressIndicator(),
+                                )
+                              : Container(
+                                  height: MediaQuery.of(context).size.height * 0.3,
+                                  padding: const EdgeInsets.symmetric(
+                                    vertical: kPadding * 2,
+                                  ),
+                                  child: ListView.builder(
+                                    itemBuilder: (context, index) {
+                                      final blog = state.blogs[index];
+                                      return ExploreCard(
+                                        title: blog.title,
+                                        subtitle: blog.subtitle,
+                                        imageUrl: blog.image,
+                                        onTap: () {
+                                          launchUrlString(
+                                            blog.launchUrl,
+                                            mode: LaunchMode.externalApplication,
+                                          );
+                                        },
+                                      );
+                                    },
+                                    shrinkWrap: true,
+                                    scrollDirection: Axis.horizontal,
+                                    itemCount: state.blogs.length,
+                                  ),
+                                ),
+                        )),
               ),
             ),
             const SizedBox(height: kPadding * 2),
-            OutlinedButton(
-              onPressed: () {
-                AuthCubit.instance.logout();
-              },
-              child: const Text('Log Out'),
-            ),
           ],
         ),
       ),

@@ -1,10 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-part 'home_state.dart';
-
 part 'home_cubit.freezed.dart';
-
 part 'home_cubit.g.dart';
 
 @freezed
@@ -27,7 +24,8 @@ class HomeCubit extends Cubit<HomeState> {
             aqi: 78,
             location: 'Electronics City Phase 1',
             diseases: ['Asthma', 'Heart Diseases', 'Sensitive Groups'],
-            advisory: 'Good day to be active outside.\nContinue with normal activities.',
+            advisory:
+                'Good day to be active outside.\nContinue with normal activities.',
           ),
         );
 }

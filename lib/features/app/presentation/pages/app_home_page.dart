@@ -1,4 +1,7 @@
+import 'package:barcode_scan2/platform_wrapper.dart';
+import 'package:expiro/features/product/data/blocs/product_cubit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_expandable_fab/flutter_expandable_fab.dart';
 
 import '../../../../configurations/configurations.dart';
@@ -10,7 +13,7 @@ class AppHomePage extends StatelessWidget with AutoRouteWrapper {
     Key? key,
   }) : super(key: key);
 
-  final GlobalKey expandableKey = GlobalKey<ExpandableFabState>();
+  final expandableKey = GlobalKey<ExpandableFabState>();
 
   @override
   Widget build(BuildContext context) {
@@ -27,8 +30,7 @@ class AppHomePage extends StatelessWidget with AutoRouteWrapper {
         const end = Offset.zero;
         const curve = Curves.fastOutSlowIn;
 
-        if ((context.tabsRouter.previousIndex ?? 0) <
-            context.tabsRouter.activeIndex) {
+        if ((context.tabsRouter.previousIndex ?? 0) < context.tabsRouter.activeIndex) {
           return SlideTransition(
             position: animation.drive(
               Tween(begin: begin, end: end).chain(
@@ -59,6 +61,7 @@ class AppHomePage extends StatelessWidget with AutoRouteWrapper {
       floatingActionButtonLocation: ExpandableFab.location,
       floatingActionButtonBuilder: (context, router) => router.activeIndex == 0
           ? ExpandableFab(
+              key: expandableKey,
               openButtonBuilder: RotateFloatingActionButtonBuilder(
                 child: const Icon(Icons.add),
                 fabSize: ExpandableFabSize.regular,
@@ -83,6 +86,7 @@ class AppHomePage extends StatelessWidget with AutoRouteWrapper {
                   heroTag: null,
                   tooltip: 'Add Manually',
                   onPressed: () {
+                    expandableKey.currentState?.toggle();
                     context.router.push(const ProductRouter());
                   },
                   child: const Icon(Icons.edit),
@@ -90,17 +94,13 @@ class AppHomePage extends StatelessWidget with AutoRouteWrapper {
                 FloatingActionButton(
                   heroTag: null,
                   tooltip: 'Scan QR Code',
-                  onPressed: () {},
+                  onPressed: () async {
+                    expandableKey.currentState?.toggle();
+                    final result = await BarcodeScanner.scan();
+                    print('result -------------------> ${result.rawContent}');
+                  },
                   child: const Icon(
                     Icons.qr_code_scanner,
-                  ),
-                ),
-                FloatingActionButton(
-                  heroTag: null,
-                  tooltip: 'Add Image',
-                  onPressed: () {},
-                  child: const Icon(
-                    Icons.image,
                   ),
                 ),
               ],
@@ -137,7 +137,13 @@ class AppHomePage extends StatelessWidget with AutoRouteWrapper {
   }
 
   @override
-  Widget wrappedRoute(BuildContext context) => this;
+  Widget wrappedRoute(BuildContext context) => BlocListener<ProductCubit, ProductState>(
+        listener: (context, state) {
+          context.read<ProductCubit>().checkAlerts();
+        },
+        listenWhen: (previous, current) => previous.products != current.products,
+        child: this,
+      );
 
   String getAppBarText(int activeIndex) {
     switch (activeIndex) {

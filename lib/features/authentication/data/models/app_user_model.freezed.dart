@@ -20,6 +20,7 @@ AppUser _$AppUserFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$AppUser {
+  @JsonKey(name: '_id')
   String get id => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
   @JsonKey(includeIfNull: false)
@@ -38,7 +39,7 @@ abstract class $AppUserCopyWith<$Res> {
       _$AppUserCopyWithImpl<$Res, AppUser>;
   @useResult
   $Res call(
-      {String id,
+      {@JsonKey(name: '_id') String id,
       String name,
       @JsonKey(includeIfNull: false) String? email,
       @JsonKey(includeIfNull: false) String? profilePicture});
@@ -91,7 +92,7 @@ abstract class _$$_AppUserCopyWith<$Res> implements $AppUserCopyWith<$Res> {
   @override
   @useResult
   $Res call(
-      {String id,
+      {@JsonKey(name: '_id') String id,
       String name,
       @JsonKey(includeIfNull: false) String? email,
       @JsonKey(includeIfNull: false) String? profilePicture});
@@ -137,7 +138,7 @@ class __$$_AppUserCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_AppUser implements _AppUser {
   const _$_AppUser(
-      {required this.id,
+      {@JsonKey(name: '_id') required this.id,
       required this.name,
       @JsonKey(includeIfNull: false) this.email,
       @JsonKey(includeIfNull: false) this.profilePicture});
@@ -146,6 +147,7 @@ class _$_AppUser implements _AppUser {
       _$$_AppUserFromJson(json);
 
   @override
+  @JsonKey(name: '_id')
   final String id;
   @override
   final String name;
@@ -193,7 +195,7 @@ class _$_AppUser implements _AppUser {
 
 abstract class _AppUser implements AppUser {
   const factory _AppUser(
-          {required final String id,
+          {@JsonKey(name: '_id') required final String id,
           required final String name,
           @JsonKey(includeIfNull: false) final String? email,
           @JsonKey(includeIfNull: false) final String? profilePicture}) =
@@ -202,6 +204,7 @@ abstract class _AppUser implements AppUser {
   factory _AppUser.fromJson(Map<String, dynamic> json) = _$_AppUser.fromJson;
 
   @override
+  @JsonKey(name: '_id')
   String get id;
   @override
   String get name;

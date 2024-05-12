@@ -55,14 +55,6 @@ class AuthCubit extends HydratedCubit<AuthState> with CubitMaybeEmit {
     // );
   }
 
-  Future<AppUser> createUser() async {
-    return AppUser(
-      id: 'id',
-      name: 'name',
-      email: 'email',
-    );
-  }
-
   Future<void> logout() async {
     await Auth0SocialService().logOut();
     emit(

@@ -7,7 +7,7 @@ part 'app_user_model.g.dart';
 @freezed
 class AppUser with _$AppUser {
   const factory AppUser({
-    required String id,
+    @JsonKey(name: '_id') required String id,
     required String name,
     @JsonKey(includeIfNull: false) String? email,
     @JsonKey(includeIfNull: false) String? profilePicture,
