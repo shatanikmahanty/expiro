@@ -1,5 +1,7 @@
 import 'package:barcode_scan2/platform_wrapper.dart';
+import 'package:expiro/features/product/data/blocs/product_cubit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_expandable_fab/flutter_expandable_fab.dart';
 
 import '../../../../configurations/configurations.dart';
@@ -101,16 +103,6 @@ class AppHomePage extends StatelessWidget with AutoRouteWrapper {
                     Icons.qr_code_scanner,
                   ),
                 ),
-                FloatingActionButton(
-                  heroTag: null,
-                  tooltip: 'Add Image',
-                  onPressed: () {
-                    expandableKey.currentState?.toggle();
-                  },
-                  child: const Icon(
-                    Icons.image,
-                  ),
-                ),
               ],
             )
           : const Offstage(),
@@ -145,7 +137,13 @@ class AppHomePage extends StatelessWidget with AutoRouteWrapper {
   }
 
   @override
-  Widget wrappedRoute(BuildContext context) => this;
+  Widget wrappedRoute(BuildContext context) => BlocListener<ProductCubit, ProductState>(
+        listener: (context, state) {
+          context.read<ProductCubit>().checkAlerts();
+        },
+        listenWhen: (previous, current) => previous.products != current.products,
+        child: this,
+      );
 
   String getAppBarText(int activeIndex) {
     switch (activeIndex) {

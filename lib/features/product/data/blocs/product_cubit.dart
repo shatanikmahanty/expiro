@@ -1,4 +1,5 @@
 import 'package:expiro/features/authentication/authentication.dart';
+import 'package:expiro/features/product/data/models/product_alerts_model.dart';
 import 'package:expiro/features/product/data/models/product_model.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -12,6 +13,7 @@ part 'product_cubit.g.dart';
 class ProductState with _$ProductState {
   const factory ProductState({
     @Default([]) List<ProductModel> products,
+    @Default([]) List<ProductAlertsModel> productAlerts,
     @Default([]) List<ProductModel> filteredProducts,
     @Default(false) bool isLoading,
     @Default(null) String? selectedCategory,
@@ -27,6 +29,26 @@ class ProductCubit extends Cubit<ProductState> {
     fetchProducts();
   }
 
+  void checkAlerts() {
+    final productAlerts = <ProductAlertsModel>[];
+    for (final product in state.products) {
+      if (product.expiryDate.isBefore(DateTime.now())) {
+        productAlerts.add(ProductAlertsModel(
+          name: product.name,
+          image: product.image,
+          alertType: AlertType.expired,
+        ));
+      } else if (DateTime.now().add(const Duration(days: 3)).isAfter(product.expiryDate)) {
+        productAlerts.add(ProductAlertsModel(
+          name: product.name,
+          image: product.image,
+          alertType: AlertType.expiringSoon,
+        ));
+      }
+    }
+    emit(state.copyWith(productAlerts: productAlerts));
+  }
+
   Future<void> fetchProducts() async {
     final user = AuthCubit.instance.state.user;
     if (user == null) return;
@@ -39,7 +61,7 @@ class ProductCubit extends Cubit<ProductState> {
           products: products,
         ),
       );
-    } catch (e, s) {
+    } catch (e, _) {
       emit(state.copyWith(isLoading: false));
     }
   }
@@ -62,29 +84,20 @@ class ProductCubit extends Cubit<ProductState> {
   }
 
   List<ProductModel?> getExpiredProducts() {
-    final expiredProducts = state.products.map((e) {
-      if (e.expiryDate.isAfter(DateTime.now())) {
-        return e;
-      }
-    }).toList();
+    final expiredProducts = state.products.where((e) => e.expiryDate.isBefore(DateTime.now())).toList();
     return expiredProducts;
   }
 
   List<ProductModel?> getSoonToExpireProducts() {
-    final soonToExpiredProducts = state.products.map((e) {
-      if (DateTime.now().add(const Duration(days: 15)).isAfter(e.expiryDate)) {
-        return e;
-      }
-    }).toList();
+    final soonToExpiredProducts = state.products
+        .where((e) => (e.expiryDate.difference(DateTime.now()).inDays <= 3 && e.expiryDate.isAfter(DateTime.now())))
+        .toList();
     return soonToExpiredProducts;
   }
 
   List<ProductModel?> getGoodToUseProducts() {
-    final goodToUseProducts = state.products.map((e) {
-      if (DateTime.now().add(const Duration(days: 15)).isBefore(e.expiryDate)) {
-        return e;
-      }
-    }).toList();
+    final goodToUseProducts =
+        state.products.where((e) => e.expiryDate.isAfter(DateTime.now().add(const Duration(days: 3)))).toList();
     return goodToUseProducts;
   }
 

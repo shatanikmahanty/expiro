@@ -1,7 +1,10 @@
+import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'product_model.freezed.dart';
 part 'product_model.g.dart';
+
+//ignore_for_file: invalid_annotation_target
 
 @freezed
 class ProductModel with _$ProductModel {
@@ -30,4 +33,16 @@ extension ProductModelX on ProductModel {
       : recyclable!
           ? 'Recyclable'
           : 'Non Recyclable';
+
+  int get daysTillExpiry => expiryDate.difference(DateTime.now()).inDays;
+
+  Color get expiryIndicatorColor {
+    if (daysTillExpiry < 0) {
+      return Colors.red;
+    } else if (daysTillExpiry < 7) {
+      return Colors.amber;
+    } else {
+      return Colors.green;
+    }
+  }
 }

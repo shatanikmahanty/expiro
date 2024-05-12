@@ -21,6 +21,8 @@ ProductState _$ProductStateFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$ProductState {
   List<ProductModel> get products => throw _privateConstructorUsedError;
+  List<ProductAlertsModel> get productAlerts =>
+      throw _privateConstructorUsedError;
   List<ProductModel> get filteredProducts => throw _privateConstructorUsedError;
   bool get isLoading => throw _privateConstructorUsedError;
   String? get selectedCategory => throw _privateConstructorUsedError;
@@ -39,6 +41,7 @@ abstract class $ProductStateCopyWith<$Res> {
   @useResult
   $Res call(
       {List<ProductModel> products,
+      List<ProductAlertsModel> productAlerts,
       List<ProductModel> filteredProducts,
       bool isLoading,
       String? selectedCategory});
@@ -58,6 +61,7 @@ class _$ProductStateCopyWithImpl<$Res, $Val extends ProductState>
   @override
   $Res call({
     Object? products = null,
+    Object? productAlerts = null,
     Object? filteredProducts = null,
     Object? isLoading = null,
     Object? selectedCategory = freezed,
@@ -67,6 +71,10 @@ class _$ProductStateCopyWithImpl<$Res, $Val extends ProductState>
           ? _value.products
           : products // ignore: cast_nullable_to_non_nullable
               as List<ProductModel>,
+      productAlerts: null == productAlerts
+          ? _value.productAlerts
+          : productAlerts // ignore: cast_nullable_to_non_nullable
+              as List<ProductAlertsModel>,
       filteredProducts: null == filteredProducts
           ? _value.filteredProducts
           : filteredProducts // ignore: cast_nullable_to_non_nullable
@@ -93,6 +101,7 @@ abstract class _$$_ProductStateCopyWith<$Res>
   @useResult
   $Res call(
       {List<ProductModel> products,
+      List<ProductAlertsModel> productAlerts,
       List<ProductModel> filteredProducts,
       bool isLoading,
       String? selectedCategory});
@@ -110,6 +119,7 @@ class __$$_ProductStateCopyWithImpl<$Res>
   @override
   $Res call({
     Object? products = null,
+    Object? productAlerts = null,
     Object? filteredProducts = null,
     Object? isLoading = null,
     Object? selectedCategory = freezed,
@@ -119,6 +129,10 @@ class __$$_ProductStateCopyWithImpl<$Res>
           ? _value._products
           : products // ignore: cast_nullable_to_non_nullable
               as List<ProductModel>,
+      productAlerts: null == productAlerts
+          ? _value._productAlerts
+          : productAlerts // ignore: cast_nullable_to_non_nullable
+              as List<ProductAlertsModel>,
       filteredProducts: null == filteredProducts
           ? _value._filteredProducts
           : filteredProducts // ignore: cast_nullable_to_non_nullable
@@ -140,10 +154,12 @@ class __$$_ProductStateCopyWithImpl<$Res>
 class _$_ProductState implements _ProductState {
   const _$_ProductState(
       {final List<ProductModel> products = const [],
+      final List<ProductAlertsModel> productAlerts = const [],
       final List<ProductModel> filteredProducts = const [],
       this.isLoading = false,
       this.selectedCategory = null})
       : _products = products,
+        _productAlerts = productAlerts,
         _filteredProducts = filteredProducts;
 
   factory _$_ProductState.fromJson(Map<String, dynamic> json) =>
@@ -156,6 +172,15 @@ class _$_ProductState implements _ProductState {
     if (_products is EqualUnmodifiableListView) return _products;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_products);
+  }
+
+  final List<ProductAlertsModel> _productAlerts;
+  @override
+  @JsonKey()
+  List<ProductAlertsModel> get productAlerts {
+    if (_productAlerts is EqualUnmodifiableListView) return _productAlerts;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_productAlerts);
   }
 
   final List<ProductModel> _filteredProducts;
@@ -177,7 +202,7 @@ class _$_ProductState implements _ProductState {
 
   @override
   String toString() {
-    return 'ProductState(products: $products, filteredProducts: $filteredProducts, isLoading: $isLoading, selectedCategory: $selectedCategory)';
+    return 'ProductState(products: $products, productAlerts: $productAlerts, filteredProducts: $filteredProducts, isLoading: $isLoading, selectedCategory: $selectedCategory)';
   }
 
   @override
@@ -186,6 +211,8 @@ class _$_ProductState implements _ProductState {
         (other.runtimeType == runtimeType &&
             other is _$_ProductState &&
             const DeepCollectionEquality().equals(other._products, _products) &&
+            const DeepCollectionEquality()
+                .equals(other._productAlerts, _productAlerts) &&
             const DeepCollectionEquality()
                 .equals(other._filteredProducts, _filteredProducts) &&
             (identical(other.isLoading, isLoading) ||
@@ -199,6 +226,7 @@ class _$_ProductState implements _ProductState {
   int get hashCode => Object.hash(
       runtimeType,
       const DeepCollectionEquality().hash(_products),
+      const DeepCollectionEquality().hash(_productAlerts),
       const DeepCollectionEquality().hash(_filteredProducts),
       isLoading,
       selectedCategory);
@@ -220,6 +248,7 @@ class _$_ProductState implements _ProductState {
 abstract class _ProductState implements ProductState {
   const factory _ProductState(
       {final List<ProductModel> products,
+      final List<ProductAlertsModel> productAlerts,
       final List<ProductModel> filteredProducts,
       final bool isLoading,
       final String? selectedCategory}) = _$_ProductState;
@@ -229,6 +258,8 @@ abstract class _ProductState implements ProductState {
 
   @override
   List<ProductModel> get products;
+  @override
+  List<ProductAlertsModel> get productAlerts;
   @override
   List<ProductModel> get filteredProducts;
   @override

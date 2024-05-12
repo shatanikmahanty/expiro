@@ -12,6 +12,11 @@ _$_ProductState _$$_ProductStateFromJson(Map<String, dynamic> json) =>
               ?.map((e) => ProductModel.fromJson(e as Map<String, dynamic>))
               .toList() ??
           const [],
+      productAlerts: (json['productAlerts'] as List<dynamic>?)
+              ?.map(
+                  (e) => ProductAlertsModel.fromJson(e as Map<String, dynamic>))
+              .toList() ??
+          const [],
       filteredProducts: (json['filteredProducts'] as List<dynamic>?)
               ?.map((e) => ProductModel.fromJson(e as Map<String, dynamic>))
               .toList() ??
@@ -23,6 +28,7 @@ _$_ProductState _$$_ProductStateFromJson(Map<String, dynamic> json) =>
 Map<String, dynamic> _$$_ProductStateToJson(_$_ProductState instance) =>
     <String, dynamic>{
       'products': instance.products,
+      'productAlerts': instance.productAlerts,
       'filteredProducts': instance.filteredProducts,
       'isLoading': instance.isLoading,
       'selectedCategory': instance.selectedCategory,

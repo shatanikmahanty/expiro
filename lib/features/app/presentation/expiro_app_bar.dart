@@ -29,6 +29,9 @@ class ExpiroAppBar extends StatelessWidget implements PreferredSizeWidget {
         leadingWidth: kPadding * 6,
         elevation: elevation,
         centerTitle: centerTitle,
+        leading: AutoLeadingButton(
+          color: theme.primaryColor,
+        ),
         title: appBarTitleText != null
             ? Text(
                 appBarTitleText!,

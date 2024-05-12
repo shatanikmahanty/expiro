@@ -50,7 +50,7 @@ class AlertsCard extends StatelessWidget {
                     const SizedBox(width: kPadding),
                     Icon(
                       alertIcon,
-                      size: 30,
+                      size: 20,
                       color: alertIconColor,
                     ),
                   ],
@@ -62,10 +62,16 @@ class AlertsCard extends StatelessWidget {
               ],
             ),
           ),
-          CachedNetworkImage(
-            imageUrl: productUrl,
-            height: 100,
-            width: 80,
+          const SizedBox(width: kPadding),
+          ClipRRect(
+            borderRadius: const BorderRadius.only(
+              topRight: Radius.circular(kPadding * 1.5),
+              bottomRight: Radius.circular(kPadding * 1.5),
+            ),
+            child: CachedNetworkImage(
+              imageUrl: productUrl,
+              fit: BoxFit.cover,
+            ),
           ),
         ],
       ),
