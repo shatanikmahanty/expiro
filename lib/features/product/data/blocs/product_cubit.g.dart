@@ -23,6 +23,7 @@ _$_ProductState _$$_ProductStateFromJson(Map<String, dynamic> json) =>
           const [],
       isLoading: json['isLoading'] as bool? ?? false,
       selectedCategory: json['selectedCategory'] as String? ?? null,
+      expiresInFilter: json['expiresInFilter'] as int? ?? null,
     );
 
 Map<String, dynamic> _$$_ProductStateToJson(_$_ProductState instance) =>
@@ -32,4 +33,5 @@ Map<String, dynamic> _$$_ProductStateToJson(_$_ProductState instance) =>
       'filteredProducts': instance.filteredProducts,
       'isLoading': instance.isLoading,
       'selectedCategory': instance.selectedCategory,
+      'expiresInFilter': instance.expiresInFilter,
     };

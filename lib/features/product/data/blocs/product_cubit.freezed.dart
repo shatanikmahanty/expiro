@@ -26,6 +26,7 @@ mixin _$ProductState {
   List<ProductModel> get filteredProducts => throw _privateConstructorUsedError;
   bool get isLoading => throw _privateConstructorUsedError;
   String? get selectedCategory => throw _privateConstructorUsedError;
+  int? get expiresInFilter => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -44,7 +45,8 @@ abstract class $ProductStateCopyWith<$Res> {
       List<ProductAlertsModel> productAlerts,
       List<ProductModel> filteredProducts,
       bool isLoading,
-      String? selectedCategory});
+      String? selectedCategory,
+      int? expiresInFilter});
 }
 
 /// @nodoc
@@ -65,6 +67,7 @@ class _$ProductStateCopyWithImpl<$Res, $Val extends ProductState>
     Object? filteredProducts = null,
     Object? isLoading = null,
     Object? selectedCategory = freezed,
+    Object? expiresInFilter = freezed,
   }) {
     return _then(_value.copyWith(
       products: null == products
@@ -87,6 +90,10 @@ class _$ProductStateCopyWithImpl<$Res, $Val extends ProductState>
           ? _value.selectedCategory
           : selectedCategory // ignore: cast_nullable_to_non_nullable
               as String?,
+      expiresInFilter: freezed == expiresInFilter
+          ? _value.expiresInFilter
+          : expiresInFilter // ignore: cast_nullable_to_non_nullable
+              as int?,
     ) as $Val);
   }
 }
@@ -104,7 +111,8 @@ abstract class _$$_ProductStateCopyWith<$Res>
       List<ProductAlertsModel> productAlerts,
       List<ProductModel> filteredProducts,
       bool isLoading,
-      String? selectedCategory});
+      String? selectedCategory,
+      int? expiresInFilter});
 }
 
 /// @nodoc
@@ -123,6 +131,7 @@ class __$$_ProductStateCopyWithImpl<$Res>
     Object? filteredProducts = null,
     Object? isLoading = null,
     Object? selectedCategory = freezed,
+    Object? expiresInFilter = freezed,
   }) {
     return _then(_$_ProductState(
       products: null == products
@@ -145,6 +154,10 @@ class __$$_ProductStateCopyWithImpl<$Res>
           ? _value.selectedCategory
           : selectedCategory // ignore: cast_nullable_to_non_nullable
               as String?,
+      expiresInFilter: freezed == expiresInFilter
+          ? _value.expiresInFilter
+          : expiresInFilter // ignore: cast_nullable_to_non_nullable
+              as int?,
     ));
   }
 }
@@ -157,7 +170,8 @@ class _$_ProductState implements _ProductState {
       final List<ProductAlertsModel> productAlerts = const [],
       final List<ProductModel> filteredProducts = const [],
       this.isLoading = false,
-      this.selectedCategory = null})
+      this.selectedCategory = null,
+      this.expiresInFilter = null})
       : _products = products,
         _productAlerts = productAlerts,
         _filteredProducts = filteredProducts;
@@ -199,10 +213,13 @@ class _$_ProductState implements _ProductState {
   @override
   @JsonKey()
   final String? selectedCategory;
+  @override
+  @JsonKey()
+  final int? expiresInFilter;
 
   @override
   String toString() {
-    return 'ProductState(products: $products, productAlerts: $productAlerts, filteredProducts: $filteredProducts, isLoading: $isLoading, selectedCategory: $selectedCategory)';
+    return 'ProductState(products: $products, productAlerts: $productAlerts, filteredProducts: $filteredProducts, isLoading: $isLoading, selectedCategory: $selectedCategory, expiresInFilter: $expiresInFilter)';
   }
 
   @override
@@ -218,7 +235,9 @@ class _$_ProductState implements _ProductState {
             (identical(other.isLoading, isLoading) ||
                 other.isLoading == isLoading) &&
             (identical(other.selectedCategory, selectedCategory) ||
-                other.selectedCategory == selectedCategory));
+                other.selectedCategory == selectedCategory) &&
+            (identical(other.expiresInFilter, expiresInFilter) ||
+                other.expiresInFilter == expiresInFilter));
   }
 
   @JsonKey(ignore: true)
@@ -229,7 +248,8 @@ class _$_ProductState implements _ProductState {
       const DeepCollectionEquality().hash(_productAlerts),
       const DeepCollectionEquality().hash(_filteredProducts),
       isLoading,
-      selectedCategory);
+      selectedCategory,
+      expiresInFilter);
 
   @JsonKey(ignore: true)
   @override
@@ -251,7 +271,8 @@ abstract class _ProductState implements ProductState {
       final List<ProductAlertsModel> productAlerts,
       final List<ProductModel> filteredProducts,
       final bool isLoading,
-      final String? selectedCategory}) = _$_ProductState;
+      final String? selectedCategory,
+      final int? expiresInFilter}) = _$_ProductState;
 
   factory _ProductState.fromJson(Map<String, dynamic> json) =
       _$_ProductState.fromJson;
@@ -266,6 +287,8 @@ abstract class _ProductState implements ProductState {
   bool get isLoading;
   @override
   String? get selectedCategory;
+  @override
+  int? get expiresInFilter;
   @override
   @JsonKey(ignore: true)
   _$$_ProductStateCopyWith<_$_ProductState> get copyWith =>
