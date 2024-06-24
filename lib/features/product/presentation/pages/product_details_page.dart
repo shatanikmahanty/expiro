@@ -35,11 +35,24 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(16),
                 ),
-                child: CachedNetworkImage(
-                  imageUrl: product.image ?? '',
-                  height: kPadding * 25,
-                  width: double.infinity,
-                  fit: BoxFit.cover,
+                child: Stack(
+                  children: [
+                    CachedNetworkImage(
+                      imageUrl: product.image ?? '',
+                      height: kPadding * 25,
+                      width: double.infinity,
+                      fit: BoxFit.cover,
+                    ),
+                    Positioned(
+                      bottom: kPadding * 2,
+                      left: kPadding * 2,
+                      child: _ProductLabel(
+                        label: product.category ?? '',
+                        icon: Icons.category,
+                        backgroundColor: theme.colorScheme.surface.withOpacity(0.5),
+                      ),
+                    ),
+                  ],
                 ),
               ),
               const SizedBox(height: kPadding * 2),
@@ -63,16 +76,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                                 style: theme.textTheme.headlineSmall,
                               ),
                               const SizedBox(height: kPadding),
-                              Row(
-                                children: [
-                                  _ProductLabel(
-                                    label: product.category ?? '',
-                                    icon: Icons.category,
-                                  ),
-                                  const SizedBox(width: kPadding),
-                                  _ProductLabel(label: product.isRecyclableStr ?? 'Non-Recyclable', icon: Icons.eco),
-                                ],
-                              )
+                              _ProductLabel(label: product.isRecyclableStr ?? 'Non-Recyclable', icon: Icons.eco)
                             ],
                           ),
                           const Spacer(),
@@ -136,10 +140,11 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
 }
 
 class _ProductLabel extends StatelessWidget {
-  const _ProductLabel({required this.label, required this.icon});
+  const _ProductLabel({required this.label, required this.icon, this.backgroundColor});
 
   final String label;
   final IconData icon;
+  final Color? backgroundColor;
 
   @override
   Widget build(BuildContext context) {
@@ -148,6 +153,7 @@ class _ProductLabel extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: kPadding / 2, horizontal: kPadding),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(kPadding),
+        color: backgroundColor,
         border: Border.all(
           color: theme.primaryColor,
         ),

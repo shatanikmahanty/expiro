@@ -32,4 +32,24 @@ class ProductRepository {
     final url = await snapshot.ref.getDownloadURL();
     return url;
   }
+
+  Future<bool> removeProduct(String pid) async {
+    try {
+      await FirebaseFirestore.instance.collection('products').doc(pid).delete();
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  Future<bool> setQuantity(String pid, int quantity) async {
+    try {
+      await FirebaseFirestore.instance.collection('products').doc(pid).update({
+        'quantity': quantity,
+      });
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
 }

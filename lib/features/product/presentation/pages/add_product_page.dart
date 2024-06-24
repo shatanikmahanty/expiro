@@ -123,7 +123,7 @@ class _AddProductPageState extends State<AddProductPage> {
                         } else {
                           return Image.file(
                             File(path),
-                            fit: BoxFit.cover,
+                            fit: BoxFit.contain,
                             height: 200,
                             width: double.infinity,
                           );

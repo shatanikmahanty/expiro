@@ -1,4 +1,5 @@
 import 'package:barcode_scan2/platform_wrapper.dart';
+import 'package:expiro/features/list/presentation/date_filter_popup.dart';
 import 'package:expiro/features/product/data/blocs/product_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -57,54 +58,57 @@ class AppHomePage extends StatelessWidget with AutoRouteWrapper {
       appBarBuilder: (context, tabsRouter) => ExpiroAppBar(
         centerTitle: true,
         appBarTitleText: getAppBarText(tabsRouter.activeIndex),
+        actions: [
+          if (tabsRouter.activeIndex == 1) const DateFilterPopup(),
+        ],
       ),
       floatingActionButtonLocation: ExpandableFab.location,
       floatingActionButtonBuilder: (context, router) => router.activeIndex == 0
           ? ExpandableFab(
-              key: expandableKey,
-              openButtonBuilder: RotateFloatingActionButtonBuilder(
-                child: const Icon(Icons.add),
-                fabSize: ExpandableFabSize.regular,
-                backgroundColor: theme.primaryColor,
-                heroTag: null,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(kButtonRadius * 2),
-                ),
-              ),
-              closeButtonBuilder: DefaultFloatingActionButtonBuilder(
-                child: const Icon(Icons.close),
-                fabSize: ExpandableFabSize.small,
-                heroTag: null,
-                backgroundColor: theme.primaryColor,
-              ),
-              overlayStyle: ExpandableFabOverlayStyle(
-                // color: Colors.black.withOpacity(0.5),
-                blur: 5,
-              ),
-              children: [
-                FloatingActionButton(
-                  heroTag: null,
-                  tooltip: 'Add Manually',
-                  onPressed: () {
-                    expandableKey.currentState?.toggle();
-                    context.router.push(const ProductRouter());
-                  },
-                  child: const Icon(Icons.edit),
-                ),
-                FloatingActionButton(
-                  heroTag: null,
-                  tooltip: 'Scan QR Code',
-                  onPressed: () async {
-                    expandableKey.currentState?.toggle();
-                    final result = await BarcodeScanner.scan();
-                    print('result -------------------> ${result.rawContent}');
-                  },
-                  child: const Icon(
-                    Icons.qr_code_scanner,
-                  ),
-                ),
-              ],
-            )
+        key: expandableKey,
+        openButtonBuilder: RotateFloatingActionButtonBuilder(
+          child: const Icon(Icons.add),
+          fabSize: ExpandableFabSize.regular,
+          backgroundColor: theme.primaryColor,
+          heroTag: null,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(kButtonRadius * 2),
+          ),
+        ),
+        closeButtonBuilder: DefaultFloatingActionButtonBuilder(
+          child: const Icon(Icons.close),
+          fabSize: ExpandableFabSize.small,
+          heroTag: null,
+          backgroundColor: theme.primaryColor,
+        ),
+        overlayStyle: ExpandableFabOverlayStyle(
+          // color: Colors.black.withOpacity(0.5),
+          blur: 5,
+        ),
+        children: [
+          FloatingActionButton(
+            heroTag: null,
+            tooltip: 'Add Manually',
+            onPressed: () {
+              expandableKey.currentState?.toggle();
+              context.router.push(const ProductRouter());
+            },
+            child: const Icon(Icons.edit),
+          ),
+          FloatingActionButton(
+            heroTag: null,
+            tooltip: 'Scan QR Code',
+            onPressed: () async {
+              expandableKey.currentState?.toggle();
+              final result = await BarcodeScanner.scan();
+              print('result -------------------> ${result.rawContent}');
+            },
+            child: const Icon(
+              Icons.qr_code_scanner,
+            ),
+          ),
+        ],
+      )
           : const Offstage(),
       bottomNavigationBuilder: (context, tabsRouter) => SafeArea(
         bottom: true,
@@ -138,12 +142,12 @@ class AppHomePage extends StatelessWidget with AutoRouteWrapper {
 
   @override
   Widget wrappedRoute(BuildContext context) => BlocListener<ProductCubit, ProductState>(
-        listener: (context, state) {
-          context.read<ProductCubit>().checkAlerts();
-        },
-        listenWhen: (previous, current) => previous.products != current.products,
-        child: this,
-      );
+    listener: (context, state) {
+      context.read<ProductCubit>().checkAlerts();
+    },
+    listenWhen: (previous, current) => previous.products != current.products,
+    child: this,
+  );
 
   String getAppBarText(int activeIndex) {
     switch (activeIndex) {

@@ -13,29 +13,34 @@ class ListPage extends StatelessWidget {
   const ListPage({super.key});
 
   @override
-  Widget build(BuildContext context) => BlocBuilder<ProductCubit, ProductState>(
-        builder: (context, state) {
-          if (state.isLoading) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          } else if (state.products.isEmpty) {
-            return const Center(
-              child: Text('No products found'),
-            );
-          } else {
-            final productList = (state.selectedCategory?.isEmpty ?? true) ? state.products : state.filteredProducts;
-            return Column(
-              children: [
-                Expanded(
-                  flex: 2,
-                  child: _ProductCategoryFilters(
-                    selectedCategory: state.selectedCategory,
-                    onCategorySelected: (category) {
-                      context.read<ProductCubit>().filterProductsByCategory(category);
-                    },
-                  ),
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return BlocBuilder<ProductCubit, ProductState>(
+      builder: (context, state) {
+        if (state.isLoading) {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        } else if (state.products.isEmpty) {
+          return const Center(
+            child: Text('No products found'),
+          );
+        } else {
+          final productList = ((state.selectedCategory?.isEmpty ?? true) && state.expiresInFilter == null)
+              ? state.products
+              : state.filteredProducts;
+          return Column(
+            children: [
+              Expanded(
+                flex: 2,
+                child: _ProductCategoryFilters(
+                  selectedCategory: state.selectedCategory,
+                  onCategorySelected: (category) {
+                    context.read<ProductCubit>().filterProductsByCategory(category);
+                  },
                 ),
+              ),
+              if (productList.isNotEmpty)
                 Expanded(
                   flex: 17,
                   child: GridView.builder(
@@ -49,7 +54,9 @@ class ListPage extends StatelessWidget {
                       final product = productList[index];
                       return _ProductCard(
                         product: product,
-                        onItemReduce: () {},
+                        onItemReduce: () {
+                          context.read<ProductCubit>().tryReduceQuantity(product);
+                        },
                         onPressed: () {
                           context.pushRoute(
                             ProductDetailsRoute(
@@ -60,12 +67,36 @@ class ListPage extends StatelessWidget {
                       );
                     },
                   ),
+                )
+              else
+                Expanded(
+                  flex: 17,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: kPadding * 20),
+                    child: Column(
+                      children: [
+                        Icon(
+                          Icons.remove_shopping_cart_outlined,
+                          size: kPadding * 8,
+                          color: theme.primaryColor,
+                        ),
+                        const SizedBox(height: kPadding * 3),
+                        Text(
+                          'No products found',
+                          style: theme.textTheme.headlineMedium?.copyWith(
+                            color: theme.primaryColor,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
-              ],
-            );
-          }
-        },
-      );
+            ],
+          );
+        }
+      },
+    );
+  }
 }
 
 class _ProductCategoryFilters extends StatelessWidget {
@@ -162,17 +193,17 @@ class _ProductCard extends StatelessWidget {
             Positioned(
               top: 0,
               right: 0,
-              child: Container(
-                width: kPadding * 6,
-                decoration: BoxDecoration(
-                  color: theme.primaryColor,
-                  borderRadius: const BorderRadius.only(
-                    bottomLeft: Radius.circular(kPadding * 3),
-                    topRight: Radius.circular(kPadding * 3),
+              child: GestureDetector(
+                onTap: onItemReduce,
+                child: Container(
+                  width: kPadding * 6,
+                  decoration: BoxDecoration(
+                    color: theme.primaryColor,
+                    borderRadius: const BorderRadius.only(
+                      bottomLeft: Radius.circular(kPadding * 3),
+                      topRight: Radius.circular(kPadding * 3),
+                    ),
                   ),
-                ),
-                child: GestureDetector(
-                  onTap: onItemReduce,
                   child: Padding(
                     padding: const EdgeInsets.all(kPadding / 1.2),
                     child: Icon(

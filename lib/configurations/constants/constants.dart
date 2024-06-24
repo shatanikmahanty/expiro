@@ -56,3 +56,5 @@ const productRecyclableOptions = [
 const kUserCollection = 'users';
 const kProductsCollection = 'products';
 const kExploreCollection = 'explore';
+
+const daysInAYear = 365;
